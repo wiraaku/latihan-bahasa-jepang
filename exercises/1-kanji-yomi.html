@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>1. 漢字読み</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #e9eef2;
+      color: #172033;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #e9eef2; }
+    button { font: inherit; }
+
+    .page {
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .wrap {
+      width: min(1040px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel {
+      background: #ffffff;
+      border: 1px solid #ccd6df;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(31, 42, 55, 0.06);
+      padding: 24px;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      color: #607086;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(26px, 3vw, 36px);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .sub {
+      margin: 8px 0 0;
+      color: #526277;
+      font-size: 15px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(86px, 1fr));
+      gap: 10px;
+      min-width: min(470px, 100%);
+    }
+
+    .stat {
+      border: 1px solid #d9e1e8;
+      border-radius: 8px;
+      background: #f7f9fb;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat span {
+      display: block;
+      color: #65758b;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 2px;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .progress {
+      height: 12px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #d4dde6;
+      margin-top: 22px;
+    }
+
+    .progress > div {
+      width: 0;
+      height: 100%;
+      background: #172033;
+      transition: width 180ms ease;
+    }
+
+    .quiz-head, .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .question-no {
+      color: #607086;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .segmented, .action-group, .quiz-tools {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .quiz-tools {
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border: 1px solid #c7d2dc;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #172033;
+      min-height: 42px;
+      padding: 0 14px;
+      cursor: pointer;
+      transition: border-color 150ms ease, background 150ms ease, color 150ms ease, transform 150ms ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      border-color: #172033;
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .btn.primary, .btn.active {
+      background: #172033;
+      border-color: #172033;
+      color: #ffffff;
+    }
+
+    .btn.danger {
+      background: #fff7f8;
+      border-color: #e1abb5;
+      color: #a32238;
+    }
+
+    .btn.danger:hover:not(:disabled) {
+      border-color: #a32238;
+    }
+
+    .sentence {
+      margin: 22px 0;
+      border: 1px solid #d9e1e8;
+      border-radius: 8px;
+      background: #f7f9fb;
+      padding: 22px;
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.85;
+      overflow-wrap: anywhere;
+    }
+
+    .marked {
+      color: #07111f;
+      font-weight: 800;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 6px;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 72px;
+      border: 2px solid #c8d2dc;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 150ms ease, background 150ms ease;
+    }
+
+    .choice:hover { border-color: #172033; }
+
+    .badge {
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 34px;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: #e9eef2;
+      font-weight: 800;
+    }
+
+    .choice-text {
+      font-size: clamp(19px, 2.4vw, 24px);
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .choice.correct {
+      background: #edf9f1;
+      border-color: #24935d;
+    }
+
+    .choice.wrong {
+      background: #fff0f2;
+      border-color: #d53b57;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 18px;
+      border-radius: 8px;
+      padding: 15px 16px;
+      border: 1px solid;
+    }
+
+    .feedback.show { display: block; }
+    .feedback.correct { background: #edf9f1; border-color: #b8e3c8; }
+    .feedback.wrong { background: #fff0f2; border-color: #f1b7c1; }
+    .feedback p { margin: 4px 0; }
+
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(44px, 1fr));
+      gap: 8px;
+    }
+
+    .nav-btn {
+      border: 1px solid #ccd6df;
+      border-radius: 8px;
+      background: #f3f6f8;
+      min-height: 40px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .nav-btn.current { outline: 2px solid #172033; outline-offset: 1px; }
+    .nav-btn.correct { background: #dff4e7; border-color: #78c596; }
+    .nav-btn.wrong { background: #ffe2e7; border-color: #e77c8e; }
+
+    .review { display: none; }
+    .review.show { display: block; }
+    .review h2 { margin: 0 0 8px; font-size: 22px; }
+
+    .review-intro {
+      margin: 0 0 16px;
+      color: #526277;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .review-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .review-item {
+      border: 1px solid #d9e1e8;
+      border-radius: 8px;
+      background: #f7f9fb;
+      padding: 13px;
+      line-height: 1.55;
+    }
+
+    .review-item strong { display: block; margin-bottom: 4px; }
+
+    .review-note {
+      margin-top: 5px;
+      color: #526277;
+      font-size: 14px;
+    }
+
+    .ok { color: #137346; font-weight: 800; }
+    .no { color: #ba2440; font-weight: 800; }
+
+    @media (max-width: 760px) {
+      .page { padding: 14px; }
+      .panel { padding: 18px; }
+      .top { align-items: stretch; flex-direction: column; }
+      .stats { grid-template-columns: repeat(2, 1fr); min-width: 0; }
+      .quiz-tools { width: 100%; justify-content: stretch; }
+      .segmented { flex: 1 1 auto; }
+      .choices { grid-template-columns: 1fr; }
+      .actions { align-items: stretch; }
+      .actions > .btn, .action-group { width: 100%; }
+      .action-group .btn { flex: 1 1 130px; }
+      .nav-grid { grid-template-columns: repeat(5, minmax(44px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="wrap">
+      <section class="panel">
+        <div class="top">
+          <div>
+            <p class="eyebrow">文字語彙・漢字読み</p>
+            <h1>1. 漢字読み</h1>
+            <p class="sub">Kuis Interaktif 80 Soal. Pilih cara baca yang paling tepat dari 1・2・3・4.</p>
+          </div>
+          <div class="stats" aria-label="Statistik kuis">
+            <div class="stat"><span>Terjawab</span><strong id="answered">0/80</strong></div>
+            <div class="stat"><span>Benar</span><strong id="correct">0</strong></div>
+            <div class="stat"><span>Salah</span><strong id="wrong">0</strong></div>
+            <div class="stat"><span>Skor</span><strong id="score">0%</strong></div>
+          </div>
+        </div>
+        <div class="progress" aria-hidden="true"><div id="progress"></div></div>
+      </section>
+
+      <section class="panel">
+        <div class="quiz-head">
+          <div class="question-no" id="questionNo">Soal 1 / 80</div>
+          <div class="quiz-tools">
+            <div class="segmented">
+              <button class="btn active" id="allMode" type="button">Semua soal</button>
+              <button class="btn" id="wrongMode" type="button">Ulangi salah</button>
+            </div>
+            <button class="btn danger" id="resetBtn" type="button">Reset jawaban</button>
+          </div>
+        </div>
+
+        <div class="sentence" id="sentence"></div>
+        <div class="choices" id="choices"></div>
+        <div class="feedback" id="feedback"></div>
+
+        <div class="actions" style="margin-top: 20px;">
+          <button class="btn" id="prevBtn" type="button">← Sebelumnya</button>
+          <div class="action-group">
+            <button class="btn" id="reviewBtn" type="button">Review jawaban</button>
+            <button class="btn primary" id="nextBtn" type="button">Berikutnya →</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel review" id="reviewPanel">
+        <h2 id="reviewTitle">Review jawaban</h2>
+        <p class="review-intro">Ringkasan dari kunci PDF: bacaan benar dan arti inti kata target untuk soal yang sedang dibuka.</p>
+        <div class="review-list" id="reviewList"></div>
+      </section>
+
+      <section class="panel">
+        <p class="eyebrow">Navigasi soal</p>
+        <div class="nav-grid" id="navGrid"></div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const questions = [
+  { id: 1, sentence: "彼に会社をやめた理由をたずねた。", target: "理由", choices: ["りっゆう", "りよう", "りゅ", "りゆう"], answer: 3 },
+  { id: 2, sentence: "日本の夏は気温も湿度も高くて過ごしにくい。", target: "湿度", choices: ["しっけ", "しつど", "しっき", "しめど"], answer: 1 },
+  { id: 3, sentence: "これで足りますか。どうですか。", target: "足ります", choices: ["たります", "かります", "あまります", "かわります"], answer: 0 },
+  { id: 4, sentence: "その歌手は離婚のうわさを否定した。", target: "否定", choices: ["ひて", "ふってい", "ひてい", "ふてい"], answer: 2 },
+  { id: 5, sentence: "彼は小型の飛行機を持っている。", target: "小型", choices: ["しょうけい", "こがた", "しょうがた", "こけい"], answer: 1 },
+  { id: 6, sentence: "子育てと仕事の両方をちゃんとするのは大変だ。", target: "子育て", choices: ["しいくて", "こいくて", "こそだて", "しそたて"], answer: 2 },
+  { id: 7, sentence: "こんな早朝から店の前に人がたくさん並んでいます。", target: "早朝", choices: ["さっちょう", "しゃちゅう", "はやあさ", "そうちょう"], answer: 3 },
+  { id: 8, sentence: "孫ができてから、楽しみが増えました。", target: "孫", choices: ["つま", "むすめ", "まご", "むすこ"], answer: 2 },
+  { id: 9, sentence: "クラスの平均点は前期に比べて後期のほうが高かった。", target: "比べて", choices: ["のべて", "ならべて", "しらべて", "くらべて"], answer: 3 },
+  { id: 10, sentence: "妹が希望の大学に合格した。", target: "希望", choices: ["しぼう", "きぼう", "きもう", "がんぼう"], answer: 1 },
+  { id: 11, sentence: "目上の人に敬語を使うのは当然のことだ。", target: "当然", choices: ["とうぜん", "とつぜん", "しぜん", "かんぜん"], answer: 0 },
+  { id: 12, sentence: "漢字の「にんべん」は「人」を表している。", target: "表して", choices: ["しめして", "ひょうして", "あらわして", "ためして"], answer: 2 },
+  { id: 13, sentence: "「また必ず会おう」と言って彼と別れた。", target: "必ず", choices: ["ひっず", "かならず", "かわらず", "こころず"], answer: 1 },
+  { id: 14, sentence: "申し込みの期限まであと3日だ。", target: "期限", choices: ["きかん", "きはん", "きげん", "きけん"], answer: 2 },
+  { id: 15, sentence: "父はお酒を飲みすぎた翌日はいつも頭が痛いと言う。", target: "翌日", choices: ["よくひ", "とうじつ", "とうにち", "よくじつ"], answer: 3 },
+  { id: 16, sentence: "春になると、家の庭に美しい花がたくさん咲く。", target: "庭", choices: ["そと", "そば", "まえ", "にわ"], answer: 3 },
+  { id: 17, sentence: "店内には静かな音楽が流れている。", target: "流れて", choices: ["かくれて", "わかれて", "ながれて", "はなれて"], answer: 2 },
+  { id: 18, sentence: "書類を郵便で送ります。", target: "郵便", choices: ["ゆうべん", "ようべん", "ゆうびん", "ようびん"], answer: 2 },
+  { id: 19, sentence: "毎年、約40億冊の本や雑誌が出版されている。", target: "出版", choices: ["しゅつばん", "しゅつはん", "しゅつぱん", "しゅっぱん"], answer: 3 },
+  { id: 20, sentence: "あのビルの屋上から星がきれいに見えますよ。", target: "星", choices: ["ほし", "そら", "せい", "つき"], answer: 0 },
+  { id: 21, sentence: "中村さんは、10年前に交通事故で息子を亡くした。", target: "息子", choices: ["そくし", "むすこ", "いきし", "むすめ"], answer: 1 },
+  { id: 22, sentence: "ケンさんは大学で日本文学の研究をしています。", target: "研究", choices: ["けんさ", "はっぴょう", "せつめい", "けんきゅう"], answer: 3 },
+  { id: 23, sentence: "となりの家の庭に珍しい花が咲いている。", target: "珍しい", choices: ["やさしい", "おかしい", "あやしい", "めずらしい"], answer: 3 },
+  { id: 24, sentence: "学校では禁止されていることがたくさんある。", target: "禁止", choices: ["きんし", "しんし", "りんし", "ちんし"], answer: 0 },
+  { id: 25, sentence: "そのビルは周囲の環境のことも考えて建てられた。", target: "周囲", choices: ["じゅい", "しゅい", "じゅうい", "しゅうい"], answer: 3 },
+  { id: 26, sentence: "この町は江戸時代に栄えた。", target: "栄えた", choices: ["つたえた", "さかえた", "まじえた", "ととのえた"], answer: 1 },
+  { id: 27, sentence: "彼女はお酒を飲んで顔が真っ赤になった。", target: "真っ赤", choices: ["まっあか", "まっか", "まっさお", "まっくろ"], answer: 1 },
+  { id: 28, sentence: "火災の際は、係員の指示に従ってください。", target: "指示", choices: ["しし", "ゆびし", "しじ", "ゆびさし"], answer: 2 },
+  { id: 29, sentence: "犯人は窓ガラスを破って、逃げたようだ。", target: "破って", choices: ["やぶって", "わって", "こわって", "はって"], answer: 0 },
+  { id: 30, sentence: "では、明後日あらためてご連絡いたします。", target: "明後日", choices: ["めいごにち", "めいごじつ", "みょうごにち", "みょうごじつ"], answer: 2 },
+  { id: 31, sentence: "昔の人は床にすわってご飯を食べていた。", target: "床", choices: ["いす", "しょう", "ゆか", "たたみ"], answer: 2 },
+  { id: 32, sentence: "父は血圧が高いので、薬を飲んでいる。", target: "血圧", choices: ["けつあつ", "きあつ", "ちあつ", "さらあつ"], answer: 0 },
+  { id: 33, sentence: "長男は大学で経済を勉強している。", target: "経済", choices: ["けざい", "けいざい", "けっさい", "けいさい"], answer: 1 },
+  { id: 34, sentence: "父は小さい工場を営んでいる。", target: "営んで", choices: ["なやんで", "はさんで", "はげんで", "いとなんで"], answer: 3 },
+  { id: 35, sentence: "今月は支出が多くて、生活が大変だ。", target: "支出", choices: ["しで", "しっしゅつ", "ししつ", "ししゅつ"], answer: 3 },
+  { id: 36, sentence: "この棒は先が鋭いので、注意してください。", target: "鋭い", choices: ["するどい", "まるい", "みじかい", "ほそい"], answer: 0 },
+  { id: 37, sentence: "母は苦労して私を育ててくれた。", target: "苦労", choices: ["くるろう", "くろう", "くろ", "くるろ"], answer: 1 },
+  { id: 38, sentence: "やけどは外科で診てもらってください。", target: "外科", choices: ["げりょう", "げか", "がいか", "ほか"], answer: 1 },
+  { id: 39, sentence: "忘れ物がないか、もう一度チェックしましょう。", target: "忘れ物", choices: ["こわれもの", "たおれもの", "かくれもの", "わすれもの"], answer: 3 },
+  { id: 40, sentence: "私の夫は銀行員です。", target: "夫", choices: ["おと", "おとうと", "おっと", "おっとう"], answer: 2 },
+  { id: 41, sentence: "工選手は今年限りで引退することを発表した。", target: "引退", choices: ["ひきたい", "ひたい", "いんたい", "びきたい"], answer: 2 },
+  { id: 42, sentence: "さあ、涙をふきなさい。", target: "涙", choices: ["なみだ", "よごれ", "なみ", "あせ"], answer: 0 },
+  { id: 43, sentence: "京都で古い旅館に泊まった。", target: "泊まった", choices: ["こまった", "たまった", "かまった", "とまった"], answer: 3 },
+  { id: 44, sentence: "英子はクラスを代表して、立派なスピーチをした。", target: "立派", choices: ["りぱ", "りっぱ", "りつは", "りっは"], answer: 1 },
+  { id: 45, sentence: "父はがんの検査のために入院した。", target: "検査", choices: ["げんそう", "げんさく", "けんさく", "けんさ"], answer: 3 },
+  { id: 46, sentence: "ここに氏名を書いてください。", target: "氏名", choices: ["しみょう", "しめ", "しな", "しめい"], answer: 3 },
+  { id: 47, sentence: "木村さんに3時ごろ電話すると伝えてください。", target: "伝えて", choices: ["つとめて", "つたえて", "あたえて", "とらえて"], answer: 1 },
+  { id: 48, sentence: "その医者は患者に人気がある。", target: "患者", choices: ["かんしゃ", "かじゃ", "かんじゃ", "かしゃ"], answer: 2 },
+  { id: 49, sentence: "山の向こうに夕日が沈んだ。", target: "沈んだ", choices: ["えらんだ", "しずんだ", "つかんだ", "からんだ"], answer: 1 },
+  { id: 50, sentence: "個人の情報が守られないこともある。", target: "個人", choices: ["こにん", "こうにん", "こじん", "こうじん"], answer: 2 },
+  { id: 51, sentence: "面接試験の結果は一週間後にお知らせします。", target: "結果", choices: ["けつまつ", "けつろん", "けっか", "けってい"], answer: 2 },
+  { id: 52, sentence: "あの髪の短い人が田中さんですよ。", target: "髪", choices: ["ふく", "け", "はつ", "かみ"], answer: 3 },
+  { id: 53, sentence: "私もいっしょに連れていってください。", target: "連れて", choices: ["つれて", "はれて", "なれて", "ぬれて"], answer: 0 },
+  { id: 54, sentence: "実力は相手のチームのほうが上だ。", target: "相手", choices: ["そうしゅ", "そうて", "あいて", "あいしゅ"], answer: 2 },
+  { id: 55, sentence: "次回の会議は12月5日に決定しました。", target: "決定", choices: ["けてい", "けってい", "けつじょう", "けつてい"], answer: 1 },
+  { id: 56, sentence: "この店にはいろいろな種類の道具がそろっている。", target: "道具", choices: ["どうく", "みちぐ", "どうぐ", "みちく"], answer: 2 },
+  { id: 57, sentence: "ここの水には、鉄分が多く含まれている。", target: "含まれて", choices: ["たのまれて", "つつまれて", "ふくまれて", "にくまれて"], answer: 2 },
+  { id: 58, sentence: "風邪の予防には、うがいがいちばんいい。", target: "予防", choices: ["よほう", "よぼう", "ようほう", "ようぼう"], answer: 1 },
+  { id: 59, sentence: "前の会社では主に会計の仕事をしていました。", target: "主に", choices: ["しゅに", "とくに", "ともに", "おもに"], answer: 3 },
+  { id: 60, sentence: "国籍はどちらですか。", target: "国籍", choices: ["こくせき", "こっせき", "くにせき", "くにせっき"], answer: 0 },
+  { id: 61, sentence: "いつか富士山に登ってみたい。", target: "登って", choices: ["とおって", "あがって", "のぼって", "とって"], answer: 2 },
+  { id: 62, sentence: "この会社は、社員の人間関係がとてもいい。", target: "関係", choices: ["がんけい", "かんけ", "かんけい", "がんけ"], answer: 2 },
+  { id: 63, sentence: "机をきちんと並べてください。", target: "机", choices: ["ふく", "つくえ", "くつ", "いす"], answer: 1 },
+  { id: 64, sentence: "ここは芸術家たちが集まる店だ。", target: "芸術家", choices: ["ぎじゅつか", "げじつか", "げんじつか", "げいじゅつか"], answer: 3 },
+  { id: 65, sentence: "野菜を切るとき、指をけがしてしまった。", target: "指", choices: ["て", "うで", "ゆび", "かた"], answer: 2 },
+  { id: 66, sentence: "今回の調査では満足できる結果が得られなかった。", target: "満足", choices: ["まんそく", "まんぞく", "みちそく", "みちぞく"], answer: 1 },
+  { id: 67, sentence: "ネクタイが曲がっていますよ。", target: "曲がって", choices: ["さがって", "あがって", "とがって", "まがって"], answer: 3 },
+  { id: 68, sentence: "領収書は捨てないでとっておいてください。", target: "領収書", choices: ["りょうしゅうしょ", "りょしゅうしょ", "りょうしゅしょ", "りょしゅしょ"], answer: 0 },
+  { id: 69, sentence: "うちは毎年一月一日に家族で神社に出かける。", target: "神社", choices: ["じんじゃ", "じんしゃ", "しんじゃ", "しんしゃ"], answer: 0 },
+  { id: 70, sentence: "来週は涼しくなるそうだ。", target: "涼しく", choices: ["はげしく", "すずしく", "くるしく", "さびしく"], answer: 1 },
+  { id: 71, sentence: "こちらの商品はあちらのレジでお支払いください。", target: "お支払い", choices: ["おはらい", "おしあらい", "おしばらい", "おしはらい"], answer: 3 },
+  { id: 72, sentence: "ここから東京まで特急に乗れば1時間で行ける。", target: "特急", choices: ["とくきゅ", "とくきゅう", "とっきゅ", "とっきゅう"], answer: 3 },
+  { id: 73, sentence: "何か困ることがあったら、言ってください。", target: "困る", choices: ["つまる", "こまる", "もどる", "うつる"], answer: 1 },
+  { id: 74, sentence: "紙を使わない電子書籍が注目を集めている。", target: "注目", choices: ["ちゅもく", "ちゅめ", "ちゅうもく", "ちゅうめ"], answer: 2 },
+  { id: 75, sentence: "彼は去年、独立して店を開いた。", target: "独立", choices: ["どくだち", "じりつ", "どくたち", "どくりつ"], answer: 3 },
+  { id: 76, sentence: "最近、育児を手伝う男性が増えている。", target: "育児", choices: ["いくに", "いくじ", "しいく", "こそだて"], answer: 1 },
+  { id: 77, sentence: "今から解答用紙を配ります。答えはこの用紙に書いてください。", target: "解答", choices: ["がいとう", "がいどう", "かいどう", "かいとう"], answer: 3 },
+  { id: 78, sentence: "彼は細かいことは気にしない人だ。", target: "細かい", choices: ["あたたかい", "こまかい", "みじかい", "やわらかい"], answer: 1 },
+  { id: 79, sentence: "空港へ行くなら、バスが便利ですよ。", target: "空港", choices: ["くこう", "くう", "くうこう", "くうごう"], answer: 2 },
+  { id: 80, sentence: "ばらの花はいい香りがする。", target: "香り", choices: ["かおり", "こうり", "かり", "おとり"], answer: 0 },
+];
+    const reviewNotes = {
+      "1": "理由（りゆう）= alasan.",
+      "2": "湿度（しつど）= kelembapan.",
+      "3": "足ります（たります）= cukup.",
+      "4": "否定（ひてい）= menyangkal / penyangkalan.",
+      "5": "小型（こがた）= ukuran kecil.",
+      "6": "子育て（こそだて）= mengasuh anak.",
+      "7": "早朝（そうちょう）= pagi-pagi sekali.",
+      "8": "孫（まご）= cucu.",
+      "9": "比べて（くらべて）= membandingkan.",
+      "10": "希望（きぼう）= harapan / keinginan.",
+      "11": "当然（とうぜん）= tentu saja / sewajarnya.",
+      "12": "表して（あらわして）= menunjukkan / mewakili.",
+      "13": "必ず（かならず）= pasti.",
+      "14": "期限（きげん）= batas waktu.",
+      "15": "翌日（よくじつ）= hari berikutnya.",
+      "16": "庭（にわ）= halaman / taman.",
+      "17": "流れて（ながれて）= mengalir; musik terdengar.",
+      "18": "郵便（ゆうびん）= pos / surat.",
+      "19": "出版（しゅっぱん）= penerbitan.",
+      "20": "星（ほし）= bintang.",
+      "21": "息子（むすこ）= anak laki-laki.",
+      "22": "研究（けんきゅう）= penelitian.",
+      "23": "珍しい（めずらしい）= langka / tidak biasa.",
+      "24": "禁止（きんし）= larangan.",
+      "25": "周囲（しゅうい）= sekitar / lingkungan.",
+      "26": "栄えた（さかえた）= makmur / berkembang.",
+      "27": "真っ赤（まっか）= merah sekali.",
+      "28": "指示（しじ）= instruksi / petunjuk.",
+      "29": "破って（やぶって）= merobek / memecahkan.",
+      "30": "明後日（みょうごにち）= lusa.",
+      "31": "床（ゆか）= lantai.",
+      "32": "血圧（けつあつ）= tekanan darah.",
+      "33": "経済（けいざい）= ekonomi.",
+      "34": "営んで（いとなんで）= menjalankan usaha.",
+      "35": "支出（ししゅつ）= pengeluaran.",
+      "36": "鋭い（するどい）= tajam.",
+      "37": "苦労（くろう）= kesulitan / jerih payah.",
+      "38": "外科（げか）= bedah / bagian bedah.",
+      "39": "忘れ物（わすれもの）= barang tertinggal.",
+      "40": "夫（おっと）= suami.",
+      "41": "引退（いんたい）= pensiun / mundur dari karier.",
+      "42": "涙（なみだ）= air mata.",
+      "43": "泊まった（とまった）= menginap.",
+      "44": "立派（りっぱ）= hebat / bagus.",
+      "45": "検査（けんさ）= pemeriksaan.",
+      "46": "氏名（しめい）= nama lengkap.",
+      "47": "伝えて（つたえて）= menyampaikan.",
+      "48": "患者（かんじゃ）= pasien.",
+      "49": "沈んだ（しずんだ）= tenggelam / terbenam.",
+      "50": "個人（こじん）= individu / pribadi.",
+      "51": "結果（けっか）= hasil.",
+      "52": "髪（かみ）= rambut.",
+      "53": "連れて（つれて）= membawa / mengajak.",
+      "54": "相手（あいて）= lawan / pihak lain.",
+      "55": "決定（けってい）= keputusan.",
+      "56": "道具（どうぐ）= alat.",
+      "57": "含まれて（ふくまれて）= terkandung.",
+      "58": "予防（よぼう）= pencegahan.",
+      "59": "主に（おもに）= terutama.",
+      "60": "国籍（こくせき）= kewarganegaraan.",
+      "61": "登って（のぼって）= mendaki / naik.",
+      "62": "関係（かんけい）= hubungan.",
+      "63": "机（つくえ）= meja.",
+      "64": "芸術家（げいじゅつか）= seniman.",
+      "65": "指（ゆび）= jari.",
+      "66": "満足（まんぞく）= puas / kepuasan.",
+      "67": "曲がって（まがって）= bengkok.",
+      "68": "領収書（りょうしゅうしょ）= kuitansi / struk.",
+      "69": "神社（じんじゃ）= kuil Shinto.",
+      "70": "涼しく（すずしく）= sejuk.",
+      "71": "お支払い（おしはらい）= pembayaran.",
+      "72": "特急（とっきゅう）= kereta ekspres khusus.",
+      "73": "困る（こまる）= kesulitan / merasa repot.",
+      "74": "注目（ちゅうもく）= perhatian.",
+      "75": "独立（どくりつ）= mandiri / independen.",
+      "76": "育児（いくじ）= pengasuhan anak.",
+      "77": "解答（かいとう）= jawaban soal.",
+      "78": "細かい（こまかい）= detail / kecil.",
+      "79": "空港（くうこう）= bandara.",
+      "80": "香り（かおり）= aroma / wangi."
+};
+
+    const state = {
+      index: 0,
+      answers: {},
+      showReview: false,
+      mode: "all"
+    };
+
+    const el = {
+      answered: document.querySelector("#answered"),
+      correct: document.querySelector("#correct"),
+      wrong: document.querySelector("#wrong"),
+      score: document.querySelector("#score"),
+      progress: document.querySelector("#progress"),
+      questionNo: document.querySelector("#questionNo"),
+      sentence: document.querySelector("#sentence"),
+      choices: document.querySelector("#choices"),
+      feedback: document.querySelector("#feedback"),
+      prevBtn: document.querySelector("#prevBtn"),
+      nextBtn: document.querySelector("#nextBtn"),
+      resetBtn: document.querySelector("#resetBtn"),
+      reviewBtn: document.querySelector("#reviewBtn"),
+      reviewTitle: document.querySelector("#reviewTitle"),
+      reviewPanel: document.querySelector("#reviewPanel"),
+      reviewList: document.querySelector("#reviewList"),
+      navGrid: document.querySelector("#navGrid"),
+      allMode: document.querySelector("#allMode"),
+      wrongMode: document.querySelector("#wrongMode")
+    };
+
+    function pool() {
+      if (state.mode === "wrong") {
+        const wrong = questions.filter((q) => state.answers[q.id] !== undefined && state.answers[q.id] !== q.answer);
+        return wrong.length ? wrong : questions;
+      }
+      return questions;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function markedSentence(sentence, target) {
+      const safeSentence = escapeHtml(sentence);
+      const safeTarget = escapeHtml(target);
+      const index = safeSentence.indexOf(safeTarget);
+      if (index === -1) return safeSentence;
+      return safeSentence.slice(0, index) + '<span class="marked">' + safeTarget + '</span>' + safeSentence.slice(index + safeTarget.length);
+    }
+
+    function currentQuestion() {
+      const items = pool();
+      state.index = Math.min(state.index, items.length - 1);
+      return items[state.index];
+    }
+
+    function stats() {
+      const correctCount = questions.filter((q) => state.answers[q.id] === q.answer).length;
+      const answeredCount = questions.filter((q) => state.answers[q.id] !== undefined).length;
+      const wrongCount = answeredCount - correctCount;
+      return {
+        correctCount,
+        wrongCount,
+        answeredCount,
+        percentage: answeredCount ? Math.round((correctCount / answeredCount) * 100) : 0
+      };
+    }
+
+    function render() {
+      const items = pool();
+      const q = currentQuestion();
+      const selected = state.answers[q.id];
+      const summary = stats();
+
+      el.answered.textContent = summary.answeredCount + "/80";
+      el.correct.textContent = summary.correctCount;
+      el.wrong.textContent = summary.wrongCount;
+      el.score.textContent = summary.percentage + "%";
+      el.progress.style.width = ((summary.answeredCount / questions.length) * 100) + "%";
+
+      el.questionNo.textContent = "Soal " + q.id + " / 80";
+      el.sentence.innerHTML = markedSentence(q.sentence, q.target);
+      el.allMode.classList.toggle("active", state.mode === "all");
+      el.wrongMode.classList.toggle("active", state.mode === "wrong");
+
+      el.choices.innerHTML = "";
+      q.choices.forEach((choice, i) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "choice";
+        if (selected !== undefined && q.answer === i) button.classList.add("correct");
+        if (selected !== undefined && selected === i && q.answer !== i) button.classList.add("wrong");
+        button.innerHTML = '<span class="badge">' + (i + 1) + '</span><span class="choice-text">' + escapeHtml(choice) + '</span>';
+        button.addEventListener("click", () => {
+          state.answers[q.id] = i;
+          render();
+        });
+        el.choices.append(button);
+      });
+
+      if (selected === undefined) {
+        el.feedback.className = "feedback";
+        el.feedback.innerHTML = "";
+      } else {
+        const ok = selected === q.answer;
+        el.feedback.className = "feedback show " + (ok ? "correct" : "wrong");
+        el.feedback.innerHTML = '<p><strong>' + (ok ? "Benar!" : "Salah.") + '</strong></p><p>Jawaban: <strong>' + (q.answer + 1) + ". " + escapeHtml(q.choices[q.answer]) + "</strong></p>";
+      }
+
+      el.prevBtn.disabled = state.index === 0;
+      el.nextBtn.disabled = state.index === items.length - 1;
+      el.reviewBtn.textContent = state.showReview ? "Tutup review" : "Review jawaban";
+      el.reviewPanel.classList.toggle("show", state.showReview);
+
+      renderNav(q.id);
+      if (state.showReview) renderReview();
+    }
+
+    function renderNav(currentId) {
+      el.navGrid.innerHTML = "";
+      questions.forEach((q) => {
+        const a = state.answers[q.id];
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "nav-btn";
+        if (q.id === currentId) button.classList.add("current");
+        if (a !== undefined) button.classList.add(a === q.answer ? "correct" : "wrong");
+        button.textContent = q.id;
+        button.addEventListener("click", () => {
+          state.mode = "all";
+          state.index = q.id - 1;
+          render();
+        });
+        el.navGrid.append(button);
+      });
+    }
+
+    function renderReview() {
+      el.reviewList.innerHTML = "";
+      const q = currentQuestion();
+      const a = state.answers[q.id];
+      const ok = a === q.answer;
+      const item = document.createElement("div");
+      item.className = "review-item";
+      const userAnswer = a !== undefined
+        ? '<span class="' + (ok ? "ok" : "no") + '">・Pilihanmu: ' + (a + 1) + ". " + escapeHtml(q.choices[a]) + "</span>"
+        : '<span>・Pilihanmu: Belum dijawab</span>';
+      const note = reviewNotes[q.id] ? '<div class="review-note">Ringkas: ' + escapeHtml(reviewNotes[q.id]) + "</div>" : "";
+      el.reviewTitle.textContent = "Review soal " + q.id;
+      item.innerHTML = "<strong>" + q.id + ". " + markedSentence(q.sentence, q.target) + "</strong><div>Jawaban benar: " + (q.answer + 1) + ". " + escapeHtml(q.choices[q.answer]) + " " + userAnswer + "</div>" + note;
+      el.reviewList.append(item);
+    }
+
+    el.prevBtn.addEventListener("click", () => {
+      state.index = Math.max(0, state.index - 1);
+      render();
+    });
+
+    el.nextBtn.addEventListener("click", () => {
+      state.index = Math.min(pool().length - 1, state.index + 1);
+      render();
+    });
+
+    el.resetBtn.addEventListener("click", () => {
+      if (Object.keys(state.answers).length && !confirm("Reset semua jawaban dari awal?")) return;
+      state.index = 0;
+      state.answers = {};
+      state.showReview = false;
+      state.mode = "all";
+      render();
+    });
+
+    el.reviewBtn.addEventListener("click", () => {
+      state.showReview = !state.showReview;
+      render();
+    });
+
+    el.allMode.addEventListener("click", () => {
+      state.mode = "all";
+      state.index = 0;
+      render();
+    });
+
+    el.wrongMode.addEventListener("click", () => {
+      state.mode = "wrong";
+      state.index = 0;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
