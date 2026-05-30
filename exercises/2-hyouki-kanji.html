@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2. 表記 (漢字)</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #e9eef2;
+      color: #172033;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #e9eef2; }
+    button { font: inherit; }
+
+    .page { min-height: 100vh; padding: 24px; }
+    .wrap { width: min(1040px, 100%); margin: 0 auto; display: grid; gap: 18px; }
+    .panel {
+      background: #ffffff;
+      border: 1px solid #ccd6df;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(31, 42, 55, 0.06);
+      padding: 24px;
+    }
+
+    .top, .quiz-head, .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      color: #607086;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    h1 { margin: 0; font-size: clamp(26px, 3vw, 36px); line-height: 1.1; letter-spacing: 0; }
+    .sub { margin: 8px 0 0; color: #526277; font-size: 15px; line-height: 1.5; }
+
+    .back {
+      color: #172033;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(86px, 1fr));
+      gap: 10px;
+      min-width: min(470px, 100%);
+    }
+
+    .stat {
+      border: 1px solid #d9e1e8;
+      border-radius: 8px;
+      background: #f7f9fb;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat span { display: block; color: #65758b; font-size: 12px; font-weight: 800; }
+    .stat strong { display: block; margin-top: 2px; font-size: 24px; line-height: 1.2; }
+
+    .progress {
+      height: 12px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #d4dde6;
+      margin-top: 22px;
+    }
+
+    .progress > div {
+      width: 0;
+      height: 100%;
+      background: #172033;
+      transition: width 180ms ease;
+    }
+
+    .question-no { color: #607086; font-size: 14px; font-weight: 800; }
+    .segmented, .action-group, .quiz-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+    .quiz-tools { justify-content: flex-end; }
+
+    .btn {
+      border: 1px solid #c7d2dc;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #172033;
+      min-height: 42px;
+      padding: 0 14px;
+      cursor: pointer;
+      transition: border-color 150ms ease, background 150ms ease, color 150ms ease, transform 150ms ease;
+    }
+
+    .btn:hover:not(:disabled) { border-color: #172033; transform: translateY(-1px); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+    .btn.primary, .btn.active { background: #172033; border-color: #172033; color: #ffffff; }
+    .btn.danger { background: #fff7f8; border-color: #e1abb5; color: #a32238; }
+    .btn.danger:hover:not(:disabled) { border-color: #a32238; }
+
+    .question-image {
+      margin: 22px 0;
+      border: 1px solid #d9e1e8;
+      border-radius: 8px;
+      background: #f7f9fb;
+      overflow: hidden;
+    }
+
+    .question-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .choice {
+      display: grid;
+      place-items: center;
+      min-height: 62px;
+      border: 2px solid #c8d2dc;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 12px;
+      cursor: pointer;
+      font-size: 24px;
+      font-weight: 900;
+      transition: border-color 150ms ease, background 150ms ease;
+    }
+
+    .choice:hover { border-color: #172033; }
+    .choice.correct { background: #edf9f1; border-color: #24935d; }
+    .choice.wrong { background: #fff0f2; border-color: #d53b57; }
+
+    .feedback, .review-note-box {
+      display: none;
+      margin-top: 18px;
+      border-radius: 8px;
+      padding: 15px 16px;
+      border: 1px solid;
+    }
+
+    .feedback.show, .review.show { display: block; }
+    .feedback.correct { background: #edf9f1; border-color: #b8e3c8; }
+    .feedback.wrong { background: #fff0f2; border-color: #f1b7c1; }
+    .feedback p { margin: 4px 0; }
+
+    .review { display: none; }
+    .review h2 { margin: 0 0 8px; font-size: 22px; }
+    .review-intro { margin: 0 0 16px; color: #526277; font-size: 14px; line-height: 1.5; }
+    .review-item {
+      border: 1px solid #d9e1e8;
+      border-radius: 8px;
+      background: #f7f9fb;
+      padding: 14px;
+      line-height: 1.55;
+    }
+    .review-item strong { display: block; margin-bottom: 5px; }
+    .review-note { margin-top: 5px; color: #526277; font-size: 14px; }
+    .ok { color: #137346; font-weight: 800; }
+    .no { color: #ba2440; font-weight: 800; }
+
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(44px, 1fr));
+      gap: 8px;
+    }
+
+    .nav-btn {
+      border: 1px solid #ccd6df;
+      border-radius: 8px;
+      background: #f3f6f8;
+      min-height: 40px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .nav-btn.current { outline: 2px solid #172033; outline-offset: 1px; }
+    .nav-btn.correct { background: #dff4e7; border-color: #78c596; }
+    .nav-btn.wrong { background: #ffe2e7; border-color: #e77c8e; }
+
+    @media (max-width: 760px) {
+      .page { padding: 14px; }
+      .panel { padding: 18px; }
+      .top { align-items: stretch; flex-direction: column; }
+      .stats { grid-template-columns: repeat(2, 1fr); min-width: 0; }
+      .quiz-tools { width: 100%; justify-content: stretch; }
+      .segmented { flex: 1 1 auto; }
+      .choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .actions { align-items: stretch; }
+      .actions > .btn, .action-group { width: 100%; }
+      .action-group .btn { flex: 1 1 130px; }
+      .nav-grid { grid-template-columns: repeat(5, minmax(44px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="wrap">
+      <section class="panel">
+        <div class="top">
+          <div>
+            <p class="eyebrow">文字語彙・表記</p>
+            <h1>2. 表記 (漢字)</h1>
+            <p class="sub">Kuis Interaktif 90 Soal. Pilih kanji yang paling tepat dari 1・2・3・4.</p>
+          </div>
+          <a class="back" href="../index.html">← Menu utama</a>
+        </div>
+        <div class="stats" aria-label="Statistik kuis" style="margin-top: 18px;">
+          <div class="stat"><span>Terjawab</span><strong id="answered">0/90</strong></div>
+          <div class="stat"><span>Benar</span><strong id="correct">0</strong></div>
+          <div class="stat"><span>Salah</span><strong id="wrong">0</strong></div>
+          <div class="stat"><span>Skor</span><strong id="score">0%</strong></div>
+        </div>
+        <div class="progress" aria-hidden="true"><div id="progress"></div></div>
+      </section>
+
+      <section class="panel">
+        <div class="quiz-head">
+          <div class="question-no" id="questionNo">Soal 1 / 90</div>
+          <div class="quiz-tools">
+            <div class="segmented">
+              <button class="btn active" id="allMode" type="button">Semua soal</button>
+              <button class="btn" id="wrongMode" type="button">Ulangi salah</button>
+            </div>
+            <button class="btn danger" id="resetBtn" type="button">Reset jawaban</button>
+          </div>
+        </div>
+
+        <div class="question-image">
+          <img id="questionImage" alt="Soal 1">
+        </div>
+
+        <div class="choices" id="choices"></div>
+        <div class="feedback" id="feedback"></div>
+
+        <div class="actions" style="margin-top: 20px;">
+          <button class="btn" id="prevBtn" type="button">← Sebelumnya</button>
+          <div class="action-group">
+            <button class="btn" id="reviewBtn" type="button">Review jawaban</button>
+            <button class="btn primary" id="nextBtn" type="button">Berikutnya →</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel review" id="reviewPanel">
+        <h2 id="reviewTitle">Review jawaban</h2>
+        <p class="review-intro">Ringkasan dari kunci PDF: jawaban benar dan arti inti kata target untuk soal yang sedang dibuka.</p>
+        <div id="reviewList"></div>
+      </section>
+
+      <section class="panel">
+        <p class="eyebrow">Navigasi soal</p>
+        <div class="nav-grid" id="navGrid"></div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const questions = [
+      {
+            "id": 1,
+            "image": "../assets/2-hyouki-kanji/q-001.jpg",
+            "answer": 2,
+            "note": "「おくれて」 遅れて《遅れる》 terlambat / tertunda"
+      },
+      {
+            "id": 2,
+            "image": "../assets/2-hyouki-kanji/q-002.jpg",
+            "answer": 3,
+            "note": "「せいこう」 成功《成功（する）》 berhasil / sukses"
+      },
+      {
+            "id": 3,
+            "image": "../assets/2-hyouki-kanji/q-003.jpg",
+            "answer": 3,
+            "note": "「あつい」 熱い panas (benda/suhu tubuh)"
+      },
+      {
+            "id": 4,
+            "image": "../assets/2-hyouki-kanji/q-004.jpg",
+            "answer": 0,
+            "note": "「たいふう」 台風 angin topan / taifun"
+      },
+      {
+            "id": 5,
+            "image": "../assets/2-hyouki-kanji/q-005.jpg",
+            "answer": 2,
+            "note": "「むかし」 昔 dulu / zaman dahulu kala"
+      },
+      {
+            "id": 6,
+            "image": "../assets/2-hyouki-kanji/q-006.jpg",
+            "answer": 0,
+            "note": "「ぎょぎょう」 漁業 industri perikanan"
+      },
+      {
+            "id": 7,
+            "image": "../assets/2-hyouki-kanji/q-007.jpg",
+            "answer": 2,
+            "note": "「だいり」 代理 perwakilan / pengganti / substitusi"
+      },
+      {
+            "id": 8,
+            "image": "../assets/2-hyouki-kanji/q-008.jpg",
+            "answer": 0,
+            "note": "「よわかった」 弱かった《弱い》 lemah"
+      },
+      {
+            "id": 9,
+            "image": "../assets/2-hyouki-kanji/q-009.jpg",
+            "answer": 1,
+            "note": "「めいぶつ」 名物 produk terkenal / ciri khas (daerah)"
+      },
+      {
+            "id": 10,
+            "image": "../assets/2-hyouki-kanji/q-010.jpg",
+            "answer": 2,
+            "note": "「かのう」 可能（な） mungkin / memungkinkan / possible"
+      },
+      {
+            "id": 11,
+            "image": "../assets/2-hyouki-kanji/q-011.jpg",
+            "answer": 1,
+            "note": "「てつだって」 手伝って《手伝う》 membantu / menolong"
+      },
+      {
+            "id": 12,
+            "image": "../assets/2-hyouki-kanji/q-012.jpg",
+            "answer": 2,
+            "note": "「さら」 皿 piring"
+      },
+      {
+            "id": 13,
+            "image": "../assets/2-hyouki-kanji/q-013.jpg",
+            "answer": 3,
+            "note": "「とうしょ」 投書 surat pembaca / surat untuk editor"
+      },
+      {
+            "id": 14,
+            "image": "../assets/2-hyouki-kanji/q-014.jpg",
+            "answer": 1,
+            "note": "「はやく」 速く《速い》 cepat / rapid"
+      },
+      {
+            "id": 15,
+            "image": "../assets/2-hyouki-kanji/q-015.jpg",
+            "answer": 0,
+            "note": "「ちゅうおう」 中央 pusat / tengah / center"
+      },
+      {
+            "id": 16,
+            "image": "../assets/2-hyouki-kanji/q-016.jpg",
+            "answer": 2,
+            "note": "「とどく」 届く sampai / tiba / dikirim"
+      },
+      {
+            "id": 17,
+            "image": "../assets/2-hyouki-kanji/q-017.jpg",
+            "answer": 0,
+            "note": "「じこ」 事故 kecelakaan / insiden"
+      },
+      {
+            "id": 18,
+            "image": "../assets/2-hyouki-kanji/q-018.jpg",
+            "answer": 2,
+            "note": "「はり」 針 jarum"
+      },
+      {
+            "id": 19,
+            "image": "../assets/2-hyouki-kanji/q-019.jpg",
+            "answer": 0,
+            "note": "「めいれい」 命令《命令（する）》 perintah / komando"
+      },
+      {
+            "id": 20,
+            "image": "../assets/2-hyouki-kanji/q-020.jpg",
+            "answer": 3,
+            "note": "「しあわせ」 幸せ《幸せ（な）》 bahagia / senang"
+      },
+      {
+            "id": 21,
+            "image": "../assets/2-hyouki-kanji/q-021.jpg",
+            "answer": 0,
+            "note": "「かしかり」 貸し借り pinjam-meminjam"
+      },
+      {
+            "id": 22,
+            "image": "../assets/2-hyouki-kanji/q-022.jpg",
+            "answer": 1,
+            "note": "「いみ」 意味 arti / makna"
+      },
+      {
+            "id": 23,
+            "image": "../assets/2-hyouki-kanji/q-023.jpg",
+            "answer": 3,
+            "note": "「にっき」 日記 buku harian / jurnal"
+      },
+      {
+            "id": 24,
+            "image": "../assets/2-hyouki-kanji/q-024.jpg",
+            "answer": 0,
+            "note": "「ひろった」 拾った《拾う》 memungut / mengambil"
+      },
+      {
+            "id": 25,
+            "image": "../assets/2-hyouki-kanji/q-025.jpg",
+            "answer": 0,
+            "note": "「そつぎょう」 卒業《卒業（する）》 lulus / kelulusan"
+      },
+      {
+            "id": 26,
+            "image": "../assets/2-hyouki-kanji/q-026.jpg",
+            "answer": 0,
+            "note": "「みずうみ」 湖 danau"
+      },
+      {
+            "id": 27,
+            "image": "../assets/2-hyouki-kanji/q-027.jpg",
+            "answer": 3,
+            "note": "「ふとい」 太い lebar / gemuk / besar"
+      },
+      {
+            "id": 28,
+            "image": "../assets/2-hyouki-kanji/q-028.jpg",
+            "answer": 0,
+            "note": "「るす」 留守 tidak di rumah / pergi keluar"
+      },
+      {
+            "id": 29,
+            "image": "../assets/2-hyouki-kanji/q-029.jpg",
+            "answer": 2,
+            "note": "「けしき」 景色 pemandangan / view"
+      },
+      {
+            "id": 30,
+            "image": "../assets/2-hyouki-kanji/q-030.jpg",
+            "answer": 1,
+            "note": "「えらんだ」 選んだ《選ぶ》 memilih / menyeleksi"
+      },
+      {
+            "id": 31,
+            "image": "../assets/2-hyouki-kanji/q-031.jpg",
+            "answer": 2,
+            "note": "「かくりつ」 確率 probabilitas / kemungkinan"
+      },
+      {
+            "id": 32,
+            "image": "../assets/2-hyouki-kanji/q-032.jpg",
+            "answer": 0,
+            "note": "「ふるく」 古く《古い》 lama / tua / kuno"
+      },
+      {
+            "id": 33,
+            "image": "../assets/2-hyouki-kanji/q-033.jpg",
+            "answer": 2,
+            "note": "「げんいん」 原因 penyebab / asal mula"
+      },
+      {
+            "id": 34,
+            "image": "../assets/2-hyouki-kanji/q-034.jpg",
+            "answer": 1,
+            "note": "「いか」 以下 di bawah / kurang dari / atau kurang"
+      },
+      {
+            "id": 35,
+            "image": "../assets/2-hyouki-kanji/q-035.jpg",
+            "answer": 1,
+            "note": "「うで」 腕 lengan / kemampuan / keahlian"
+      },
+      {
+            "id": 36,
+            "image": "../assets/2-hyouki-kanji/q-036.jpg",
+            "answer": 2,
+            "note": "「いのった」 祈った《祈る》 berdoa"
+      },
+      {
+            "id": 37,
+            "image": "../assets/2-hyouki-kanji/q-037.jpg",
+            "answer": 2,
+            "note": "「ふくしゅう」 復習 tinjauan ulang / mengulang pelajaran / review"
+      },
+      {
+            "id": 38,
+            "image": "../assets/2-hyouki-kanji/q-038.jpg",
+            "answer": 3,
+            "note": "「もとめて」 求めて《求める》 mencari / meminta / menuntut"
+      },
+      {
+            "id": 39,
+            "image": "../assets/2-hyouki-kanji/q-039.jpg",
+            "answer": 3,
+            "note": "「ものがたり」 物語 cerita / kisah / hikayat"
+      },
+      {
+            "id": 40,
+            "image": "../assets/2-hyouki-kanji/q-040.jpg",
+            "answer": 1,
+            "note": "「せきにん」 責任 tanggung jawab"
+      },
+      {
+            "id": 41,
+            "image": "../assets/2-hyouki-kanji/q-041.jpg",
+            "answer": 0,
+            "note": "「へいや」 平野 dataran rendah / dataran luas"
+      },
+      {
+            "id": 42,
+            "image": "../assets/2-hyouki-kanji/q-042.jpg",
+            "answer": 2,
+            "note": "「みなと」 港 pelabuhan / port"
+      },
+      {
+            "id": 43,
+            "image": "../assets/2-hyouki-kanji/q-043.jpg",
+            "answer": 2,
+            "note": "「しょうかい」 紹介《紹介（する）》 perkenalan / memperkenalkan"
+      },
+      {
+            "id": 44,
+            "image": "../assets/2-hyouki-kanji/q-044.jpg",
+            "answer": 3,
+            "note": "「でんし」 電子 elektronik / electronic"
+      },
+      {
+            "id": 45,
+            "image": "../assets/2-hyouki-kanji/q-045.jpg",
+            "answer": 0,
+            "note": "「かお」 顔 wajah / face"
+      },
+      {
+            "id": 46,
+            "image": "../assets/2-hyouki-kanji/q-046.jpg",
+            "answer": 1,
+            "note": "「みらい」 未来 masa depan / future"
+      },
+      {
+            "id": 47,
+            "image": "../assets/2-hyouki-kanji/q-047.jpg",
+            "answer": 3,
+            "note": "「なくなった」 亡くなった《亡くなる》 meninggal dunia / wafat"
+      },
+      {
+            "id": 48,
+            "image": "../assets/2-hyouki-kanji/q-048.jpg",
+            "answer": 3,
+            "note": "「しあい」 試合 pertandingan / game (olahraga)"
+      },
+      {
+            "id": 49,
+            "image": "../assets/2-hyouki-kanji/q-049.jpg",
+            "answer": 3,
+            "note": "「むちゅう」 夢中（な） asyik / terpikat / sangat tekun"
+      },
+      {
+            "id": 50,
+            "image": "../assets/2-hyouki-kanji/q-050.jpg",
+            "answer": 1,
+            "note": "「えきたい」 液体 cairan / liquid"
+      },
+      {
+            "id": 51,
+            "image": "../assets/2-hyouki-kanji/q-051.jpg",
+            "answer": 0,
+            "note": "「みのり」 実って《実る》 berbuah / menghasilkan / membuahkan hasil"
+      },
+      {
+            "id": 52,
+            "image": "../assets/2-hyouki-kanji/q-052.jpg",
+            "answer": 1,
+            "note": "「ようす」 様子 kondisi / keadaan / penampilan"
+      },
+      {
+            "id": 53,
+            "image": "../assets/2-hyouki-kanji/q-053.jpg",
+            "answer": 0,
+            "note": "「くも」 雲 awan"
+      },
+      {
+            "id": 54,
+            "image": "../assets/2-hyouki-kanji/q-054.jpg",
+            "answer": 2,
+            "note": "「きそく」 規則 aturan / regulasi"
+      },
+      {
+            "id": 55,
+            "image": "../assets/2-hyouki-kanji/q-055.jpg",
+            "answer": 1,
+            "note": "「しつれい」 失礼《失礼（する）》 permisi / tidak sopan / pamit"
+      },
+      {
+            "id": 56,
+            "image": "../assets/2-hyouki-kanji/q-056.jpg",
+            "answer": 3,
+            "note": "「わかれた」 別れた《別れる》 berpisah / membagi / memisahkan"
+      },
+      {
+            "id": 57,
+            "image": "../assets/2-hyouki-kanji/q-057.jpg",
+            "answer": 2,
+            "note": "「ちじ」 知事 gubernur"
+      },
+      {
+            "id": 58,
+            "image": "../assets/2-hyouki-kanji/q-058.jpg",
+            "answer": 2,
+            "note": "「ほうこう」 方向 arah / tujuan / orientasi"
+      },
+      {
+            "id": 59,
+            "image": "../assets/2-hyouki-kanji/q-059.jpg",
+            "answer": 0,
+            "note": "「ゆだん」 油断 kelalaian / kecerobohan / lengah"
+      },
+      {
+            "id": 60,
+            "image": "../assets/2-hyouki-kanji/q-060.jpg",
+            "answer": 0,
+            "note": "「えだ」 枝 dahan / ranting"
+      },
+      {
+            "id": 61,
+            "image": "../assets/2-hyouki-kanji/q-061.jpg",
+            "answer": 1,
+            "note": "「ひつよう」 必要《必要（な）》 perlu / butuh / diperlukan"
+      },
+      {
+            "id": 62,
+            "image": "../assets/2-hyouki-kanji/q-062.jpg",
+            "answer": 2,
+            "note": "「くうき」 空気 udara / atmosfer"
+      },
+      {
+            "id": 63,
+            "image": "../assets/2-hyouki-kanji/q-063.jpg",
+            "answer": 0,
+            "note": "「かわる」 変わる berubah / berganti / change"
+      },
+      {
+            "id": 64,
+            "image": "../assets/2-hyouki-kanji/q-064.jpg",
+            "answer": 3,
+            "note": "「きろく」 記録 rekor / catatan / record"
+      },
+      {
+            "id": 65,
+            "image": "../assets/2-hyouki-kanji/q-065.jpg",
+            "answer": 2,
+            "note": "「いんしょう」 印象 kesan / impression"
+      },
+      {
+            "id": 66,
+            "image": "../assets/2-hyouki-kanji/q-066.jpg",
+            "answer": 0,
+            "note": "「くび」 首 leher / neck"
+      },
+      {
+            "id": 67,
+            "image": "../assets/2-hyouki-kanji/q-067.jpg",
+            "answer": 0,
+            "note": "「かかく」 価格 harga / price"
+      },
+      {
+            "id": 68,
+            "image": "../assets/2-hyouki-kanji/q-068.jpg",
+            "answer": 2,
+            "note": "「おいわい」 お祝い《祝う》 perayaan / ucapan selamat / hadiah perayaan"
+      },
+      {
+            "id": 69,
+            "image": "../assets/2-hyouki-kanji/q-069.jpg",
+            "answer": 1,
+            "note": "「うわぎ」 上着 jaket / jas / atasan"
+      },
+      {
+            "id": 70,
+            "image": "../assets/2-hyouki-kanji/q-070.jpg",
+            "answer": 3,
+            "note": "「つうか」 通貨 mata uang / currency"
+      },
+      {
+            "id": 71,
+            "image": "../assets/2-hyouki-kanji/q-071.jpg",
+            "answer": 1,
+            "note": "「ならって」 習って《習う》 belajar / mempelajari"
+      },
+      {
+            "id": 72,
+            "image": "../assets/2-hyouki-kanji/q-072.jpg",
+            "answer": 1,
+            "note": "「よほう」 予報 forecast ramalan / prakiraan"
+      },
+      {
+            "id": 73,
+            "image": "../assets/2-hyouki-kanji/q-073.jpg",
+            "answer": 2,
+            "note": "「ふべん」 不便《不便（な）》 tidak praktis / tidak nyaman / inconvenient"
+      },
+      {
+            "id": 74,
+            "image": "../assets/2-hyouki-kanji/q-074.jpg",
+            "answer": 3,
+            "note": "「ことり」 小鳥 burung kecil"
+      },
+      {
+            "id": 75,
+            "image": "../assets/2-hyouki-kanji/q-075.jpg",
+            "answer": 3,
+            "note": "「むかえ」 迎え《迎える》 menyambut / menjemput / menemui"
+      },
+      {
+            "id": 76,
+            "image": "../assets/2-hyouki-kanji/q-076.jpg",
+            "answer": 1,
+            "note": "「てんじょう」 天井 langit-langit ruangan / plafon"
+      },
+      {
+            "id": 77,
+            "image": "../assets/2-hyouki-kanji/q-077.jpg",
+            "answer": 1,
+            "note": "「かんがえて」 考えて《考える》 berpikir / mempertimbangkan"
+      },
+      {
+            "id": 78,
+            "image": "../assets/2-hyouki-kanji/q-078.jpg",
+            "answer": 0,
+            "note": "「きせつ」 季節 musim / season"
+      },
+      {
+            "id": 79,
+            "image": "../assets/2-hyouki-kanji/q-079.jpg",
+            "answer": 3,
+            "note": "「じっけん」 実験 eksperimen / percobaan"
+      },
+      {
+            "id": 80,
+            "image": "../assets/2-hyouki-kanji/q-080.jpg",
+            "answer": 3,
+            "note": "「はつか」 二十日 tanggal 20 / dua puluh hari"
+      },
+      {
+            "id": 81,
+            "image": "../assets/2-hyouki-kanji/q-081.jpg",
+            "answer": 0,
+            "note": "「さいのう」 才能 bakat / talenta"
+      },
+      {
+            "id": 82,
+            "image": "../assets/2-hyouki-kanji/q-082.jpg",
+            "answer": 2,
+            "note": "「よごれ」 汚れ《汚れる》 kotoran / menjadi kotor / terkena noda"
+      },
+      {
+            "id": 83,
+            "image": "../assets/2-hyouki-kanji/q-083.jpg",
+            "answer": 1,
+            "note": "「もじ」 文字 huruf / karakter / aksara"
+      },
+      {
+            "id": 84,
+            "image": "../assets/2-hyouki-kanji/q-084.jpg",
+            "answer": 2,
+            "note": "「むこう」 向こう di sana / di seberang / melampaui"
+      },
+      {
+            "id": 85,
+            "image": "../assets/2-hyouki-kanji/q-085.jpg",
+            "answer": 3,
+            "note": "「てんねん」 天然 alami / natural"
+      },
+      {
+            "id": 86,
+            "image": "../assets/2-hyouki-kanji/q-086.jpg",
+            "answer": 0,
+            "note": "「おたく」 お宅 rumah (Anda/orang lain) {bentuk hormat}"
+      },
+      {
+            "id": 87,
+            "image": "../assets/2-hyouki-kanji/q-087.jpg",
+            "answer": 3,
+            "note": "「ほぞん」 保存《保存（する）》 menyimpan / menjaga / mengawetkan"
+      },
+      {
+            "id": 88,
+            "image": "../assets/2-hyouki-kanji/q-088.jpg",
+            "answer": 1,
+            "note": "「はこんで」 運んで《運ぶ》 membawa / mengangkut / memindahkan"
+      },
+      {
+            "id": 89,
+            "image": "../assets/2-hyouki-kanji/q-089.jpg",
+            "answer": 2,
+            "note": "「かこ」 過去 masa lalu / masa lampau"
+      },
+      {
+            "id": 90,
+            "image": "../assets/2-hyouki-kanji/q-090.jpg",
+            "answer": 2,
+            "note": "「あさい」 浅い dangkal"
+      }
+];
+    const state = {
+      index: 0,
+      answers: {},
+      showReview: false,
+      mode: "all"
+    };
+
+    const el = {
+      answered: document.querySelector("#answered"),
+      correct: document.querySelector("#correct"),
+      wrong: document.querySelector("#wrong"),
+      score: document.querySelector("#score"),
+      progress: document.querySelector("#progress"),
+      questionNo: document.querySelector("#questionNo"),
+      questionImage: document.querySelector("#questionImage"),
+      choices: document.querySelector("#choices"),
+      feedback: document.querySelector("#feedback"),
+      prevBtn: document.querySelector("#prevBtn"),
+      nextBtn: document.querySelector("#nextBtn"),
+      resetBtn: document.querySelector("#resetBtn"),
+      reviewBtn: document.querySelector("#reviewBtn"),
+      reviewTitle: document.querySelector("#reviewTitle"),
+      reviewPanel: document.querySelector("#reviewPanel"),
+      reviewList: document.querySelector("#reviewList"),
+      navGrid: document.querySelector("#navGrid"),
+      allMode: document.querySelector("#allMode"),
+      wrongMode: document.querySelector("#wrongMode")
+    };
+
+    function pool() {
+      if (state.mode === "wrong") {
+        const wrong = questions.filter((q) => state.answers[q.id] !== undefined && state.answers[q.id] !== q.answer);
+        return wrong.length ? wrong : questions;
+      }
+      return questions;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function currentQuestion() {
+      const items = pool();
+      state.index = Math.min(state.index, items.length - 1);
+      return items[state.index];
+    }
+
+    function stats() {
+      const correctCount = questions.filter((q) => state.answers[q.id] === q.answer).length;
+      const answeredCount = questions.filter((q) => state.answers[q.id] !== undefined).length;
+      const wrongCount = answeredCount - correctCount;
+      return {
+        correctCount,
+        wrongCount,
+        answeredCount,
+        percentage: answeredCount ? Math.round((correctCount / answeredCount) * 100) : 0
+      };
+    }
+
+    function render() {
+      const items = pool();
+      const q = currentQuestion();
+      const selected = state.answers[q.id];
+      const summary = stats();
+
+      el.answered.textContent = summary.answeredCount + "/90";
+      el.correct.textContent = summary.correctCount;
+      el.wrong.textContent = summary.wrongCount;
+      el.score.textContent = summary.percentage + "%";
+      el.progress.style.width = ((summary.answeredCount / questions.length) * 100) + "%";
+
+      el.questionNo.textContent = "Soal " + q.id + " / 90";
+      el.questionImage.src = q.image;
+      el.questionImage.alt = "Soal " + q.id;
+      el.allMode.classList.toggle("active", state.mode === "all");
+      el.wrongMode.classList.toggle("active", state.mode === "wrong");
+
+      el.choices.innerHTML = "";
+      [0, 1, 2, 3].forEach((choiceIndex) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "choice";
+        if (selected !== undefined && q.answer === choiceIndex) button.classList.add("correct");
+        if (selected !== undefined && selected === choiceIndex && q.answer !== choiceIndex) button.classList.add("wrong");
+        button.textContent = choiceIndex + 1;
+        button.addEventListener("click", () => {
+          state.answers[q.id] = choiceIndex;
+          render();
+        });
+        el.choices.append(button);
+      });
+
+      if (selected === undefined) {
+        el.feedback.className = "feedback";
+        el.feedback.innerHTML = "";
+      } else {
+        const ok = selected === q.answer;
+        el.feedback.className = "feedback show " + (ok ? "correct" : "wrong");
+        el.feedback.innerHTML = '<p><strong>' + (ok ? "Benar!" : "Salah.") + '</strong></p><p>Jawaban: <strong>' + (q.answer + 1) + "</strong></p><p>" + escapeHtml(q.note) + "</p>";
+      }
+
+      el.prevBtn.disabled = state.index === 0;
+      el.nextBtn.disabled = state.index === items.length - 1;
+      el.reviewBtn.textContent = state.showReview ? "Tutup review" : "Review jawaban";
+      el.reviewPanel.classList.toggle("show", state.showReview);
+
+      renderNav(q.id);
+      if (state.showReview) renderReview();
+    }
+
+    function renderNav(currentId) {
+      el.navGrid.innerHTML = "";
+      questions.forEach((q) => {
+        const a = state.answers[q.id];
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "nav-btn";
+        if (q.id === currentId) button.classList.add("current");
+        if (a !== undefined) button.classList.add(a === q.answer ? "correct" : "wrong");
+        button.textContent = q.id;
+        button.addEventListener("click", () => {
+          state.mode = "all";
+          state.index = q.id - 1;
+          render();
+        });
+        el.navGrid.append(button);
+      });
+    }
+
+    function renderReview() {
+      el.reviewList.innerHTML = "";
+      const q = currentQuestion();
+      const a = state.answers[q.id];
+      const ok = a === q.answer;
+      const item = document.createElement("div");
+      item.className = "review-item";
+      const userAnswer = a !== undefined
+        ? '<span class="' + (ok ? "ok" : "no") + '">・Pilihanmu: ' + (a + 1) + "</span>"
+        : '<span>・Pilihanmu: Belum dijawab</span>';
+      el.reviewTitle.textContent = "Review soal " + q.id;
+      item.innerHTML = "<strong>Jawaban benar: " + (q.answer + 1) + "</strong><div>" + userAnswer + '</div><div class="review-note">Ringkas: ' + escapeHtml(q.note) + "</div>";
+      el.reviewList.append(item);
+    }
+
+    el.prevBtn.addEventListener("click", () => {
+      state.index = Math.max(0, state.index - 1);
+      render();
+    });
+
+    el.nextBtn.addEventListener("click", () => {
+      state.index = Math.min(pool().length - 1, state.index + 1);
+      render();
+    });
+
+    el.resetBtn.addEventListener("click", () => {
+      if (Object.keys(state.answers).length && !confirm("Reset semua jawaban dari awal?")) return;
+      state.index = 0;
+      state.answers = {};
+      state.showReview = false;
+      state.mode = "all";
+      render();
+    });
+
+    el.reviewBtn.addEventListener("click", () => {
+      state.showReview = !state.showReview;
+      render();
+    });
+
+    el.allMode.addEventListener("click", () => {
+      state.mode = "all";
+      state.index = 0;
+      render();
+    });
+
+    el.wrongMode.addEventListener("click", () => {
+      state.mode = "wrong";
+      state.index = 0;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
