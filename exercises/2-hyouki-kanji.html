@@ -1046,7 +1046,7 @@
       el.reviewTitle.textContent = "Review soal " + q.id;
       item.innerHTML =
         "<strong>【" + q.id + "】 正解 " + (q.answer + 1) + " ✓</strong>" +
-        '<div class="review-note">' + escapeHtml(q.note) + "</div>" +
+        '<div class="review-note"><strong>Catatan / arti Indonesia</strong>' + escapeHtml(q.note) + "</div>" +
         "<div style=\"margin-top:6px;\">" + highlightPrompt(q) + "</div>" +
         "<div style=\"margin-top:4px;\">Jawaban benar: " + (q.answer + 1) + ". " + escapeHtml(q.options?.[q.answer] || "") + "</div>" +
         "<div style=\"margin-top:4px;\">" + userAnswer + "</div>";
