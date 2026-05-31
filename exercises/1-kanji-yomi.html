@@ -62,6 +62,11 @@
       color: #526277;
       font-size: 15px;
     }
+    .back {
+      color: #172033;
+      font-weight: 800;
+      text-decoration: none;
+    }
 
     .stats {
       display: grid;
@@ -112,7 +117,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
     }
 
     .question-no {
@@ -125,6 +130,28 @@
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+    }
+    .timer-tools {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .timer-input {
+      width: 92px;
+      min-height: 42px;
+      border: 1px solid #c7d2dc;
+      border-radius: 8px;
+      padding: 0 10px;
+    }
+    #timerDisplay {
+      font-size: clamp(24px, 3.2vw, 34px);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0;
+      min-width: 110px;
+      text-align: right;
     }
 
     .quiz-tools {
@@ -189,7 +216,7 @@
 
     .choices {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
     }
 
@@ -236,18 +263,6 @@
       border-color: #d53b57;
     }
 
-    .feedback {
-      display: none;
-      margin-top: 18px;
-      border-radius: 8px;
-      padding: 15px 16px;
-      border: 1px solid;
-    }
-
-    .feedback.show { display: block; }
-    .feedback.correct { background: #edf9f1; border-color: #b8e3c8; }
-    .feedback.wrong { background: #fff0f2; border-color: #f1b7c1; }
-    .feedback p { margin: 4px 0; }
 
     .nav-grid {
       display: grid;
@@ -265,6 +280,7 @@
     }
 
     .nav-btn.current { outline: 2px solid #172033; outline-offset: 1px; }
+    .nav-btn.answered { background: #e3efff; border-color: #7aa8e8; }
     .nav-btn.correct { background: #dff4e7; border-color: #78c596; }
     .nav-btn.wrong { background: #ffe2e7; border-color: #e77c8e; }
 
@@ -310,8 +326,8 @@
       .stats { grid-template-columns: repeat(2, 1fr); min-width: 0; }
       .quiz-tools { width: 100%; justify-content: stretch; }
       .segmented { flex: 1 1 auto; }
-      .choices { grid-template-columns: 1fr; }
-      .actions { align-items: stretch; }
+      .choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .actions { align-items: stretch; flex-wrap: nowrap; }
       .actions > .btn, .action-group { width: 100%; }
       .action-group .btn { flex: 1 1 130px; }
       .nav-grid { grid-template-columns: repeat(5, minmax(44px, 1fr)); }
@@ -322,7 +338,8 @@
   <main class="page">
     <div class="wrap">
       <section class="panel">
-        <div class="top">
+        <a class="back" href="../index.html">← Menu utama</a>
+        <div class="top" style="margin-top: 12px;">
           <div>
             <p class="eyebrow">文字語彙・漢字読み</p>
             <h1>1. 漢字読み</h1>
@@ -336,6 +353,16 @@
           </div>
         </div>
         <div class="progress" aria-hidden="true"><div id="progress"></div></div>
+        <div class="timer-tools">
+          <label for="minutesInput">Timer (menit)</label>
+          <input class="timer-input" id="minutesInput" type="number" min="1" value="30">
+          <button class="btn" id="startTimerBtn" type="button">Mulai timer</button>
+          <button class="btn" id="pauseTimerBtn" type="button">Pause</button>
+          <button class="btn" id="stopTimerBtn" type="button">Stop</button>
+          <button class="btn" id="finishNowBtn" type="button">Selesai sekarang</button>
+          <button class="btn" id="autoNextBtn" type="button">Auto Next: OFF</button>
+          <strong id="timerDisplay">30:00</strong>
+        </div>
       </section>
 
       <section class="panel">
@@ -352,8 +379,6 @@
 
         <div class="sentence" id="sentence"></div>
         <div class="choices" id="choices"></div>
-        <div class="feedback" id="feedback"></div>
-
         <div class="actions" style="margin-top: 20px;">
           <button class="btn" id="prevBtn" type="button">← Sebelumnya</button>
           <div class="action-group">
@@ -460,93 +485,99 @@
   { id: 80, sentence: "ばらの花はいい香りがする。", target: "香り", choices: ["かおり", "こうり", "かり", "おとり"], answer: 0 },
 ];
     const reviewNotes = {
-      "1": "理由（りゆう）= alasan.",
-      "2": "湿度（しつど）= kelembapan.",
-      "3": "足ります（たります）= cukup.",
-      "4": "否定（ひてい）= menyangkal / penyangkalan.",
-      "5": "小型（こがた）= ukuran kecil.",
-      "6": "子育て（こそだて）= mengasuh anak.",
-      "7": "早朝（そうちょう）= pagi-pagi sekali.",
-      "8": "孫（まご）= cucu.",
-      "9": "比べて（くらべて）= membandingkan.",
-      "10": "希望（きぼう）= harapan / keinginan.",
-      "11": "当然（とうぜん）= tentu saja / sewajarnya.",
-      "12": "表して（あらわして）= menunjukkan / mewakili.",
-      "13": "必ず（かならず）= pasti.",
-      "14": "期限（きげん）= batas waktu.",
-      "15": "翌日（よくじつ）= hari berikutnya.",
-      "16": "庭（にわ）= halaman / taman.",
-      "17": "流れて（ながれて）= mengalir; musik terdengar.",
-      "18": "郵便（ゆうびん）= pos / surat.",
-      "19": "出版（しゅっぱん）= penerbitan.",
-      "20": "星（ほし）= bintang.",
-      "21": "息子（むすこ）= anak laki-laki.",
-      "22": "研究（けんきゅう）= penelitian.",
-      "23": "珍しい（めずらしい）= langka / tidak biasa.",
-      "24": "禁止（きんし）= larangan.",
-      "25": "周囲（しゅうい）= sekitar / lingkungan.",
-      "26": "栄えた（さかえた）= makmur / berkembang.",
-      "27": "真っ赤（まっか）= merah sekali.",
-      "28": "指示（しじ）= instruksi / petunjuk.",
-      "29": "破って（やぶって）= merobek / memecahkan.",
-      "30": "明後日（みょうごにち）= lusa.",
-      "31": "床（ゆか）= lantai.",
-      "32": "血圧（けつあつ）= tekanan darah.",
-      "33": "経済（けいざい）= ekonomi.",
-      "34": "営んで（いとなんで）= menjalankan usaha.",
-      "35": "支出（ししゅつ）= pengeluaran.",
-      "36": "鋭い（するどい）= tajam.",
-      "37": "苦労（くろう）= kesulitan / jerih payah.",
-      "38": "外科（げか）= bedah / bagian bedah.",
-      "39": "忘れ物（わすれもの）= barang tertinggal.",
-      "40": "夫（おっと）= suami.",
-      "41": "引退（いんたい）= pensiun / mundur dari karier.",
-      "42": "涙（なみだ）= air mata.",
-      "43": "泊まった（とまった）= menginap.",
-      "44": "立派（りっぱ）= hebat / bagus.",
-      "45": "検査（けんさ）= pemeriksaan.",
-      "46": "氏名（しめい）= nama lengkap.",
-      "47": "伝えて（つたえて）= menyampaikan.",
-      "48": "患者（かんじゃ）= pasien.",
-      "49": "沈んだ（しずんだ）= tenggelam / terbenam.",
-      "50": "個人（こじん）= individu / pribadi.",
-      "51": "結果（けっか）= hasil.",
-      "52": "髪（かみ）= rambut.",
-      "53": "連れて（つれて）= membawa / mengajak.",
-      "54": "相手（あいて）= lawan / pihak lain.",
-      "55": "決定（けってい）= keputusan.",
-      "56": "道具（どうぐ）= alat.",
-      "57": "含まれて（ふくまれて）= terkandung.",
-      "58": "予防（よぼう）= pencegahan.",
-      "59": "主に（おもに）= terutama.",
-      "60": "国籍（こくせき）= kewarganegaraan.",
-      "61": "登って（のぼって）= mendaki / naik.",
-      "62": "関係（かんけい）= hubungan.",
-      "63": "机（つくえ）= meja.",
-      "64": "芸術家（げいじゅつか）= seniman.",
-      "65": "指（ゆび）= jari.",
-      "66": "満足（まんぞく）= puas / kepuasan.",
-      "67": "曲がって（まがって）= bengkok.",
-      "68": "領収書（りょうしゅうしょ）= kuitansi / struk.",
-      "69": "神社（じんじゃ）= kuil Shinto.",
-      "70": "涼しく（すずしく）= sejuk.",
-      "71": "お支払い（おしはらい）= pembayaran.",
-      "72": "特急（とっきゅう）= kereta ekspres khusus.",
-      "73": "困る（こまる）= kesulitan / merasa repot.",
-      "74": "注目（ちゅうもく）= perhatian.",
-      "75": "独立（どくりつ）= mandiri / independen.",
-      "76": "育児（いくじ）= pengasuhan anak.",
-      "77": "解答（かいとう）= jawaban soal.",
-      "78": "細かい（こまかい）= detail / kecil.",
-      "79": "空港（くうこう）= bandara.",
-      "80": "香り（かおり）= aroma / wangi."
+  "1": "【1】 正解 4♥ | 理由「りゆら」 | alasan | 彼に姿社をやめた運宙をたずねた。 | Saya menanyakan alasan dia berhenti dari perusahaan. | 漢字 | 理リ | ・［理科（りか）］IPA （mata pelajaran sekolah） | ・［理解（りかい）］pemahaman | ・［理想（りそう） ］ideal | ・［管理（かんり）］pengelolaan / manajemen | ・［義理（ぎり） ］kewajiban / tugas moral/ balas budi | ・ ［原理（げんり）］prinsip/ teori | ・ ［合理的（な）（ごうりてき（な） ） ］rasional/ masuk akal | ・［修理（しゅうり） ］perbaikan | ・ ［処理（しょり） ］pemrosesan/ penanganan | ・［心理（しんり）】psikologi | ・［整理（せいり）］pengorganisasian / perapihan | ・ ［総理大臣（そうりだいじん）］Perdana Menteri | ・ ［代理（だいり）】perwakilan / pengganti | ・［地理（ちり） ］geografi | ・ ［物理（ぶつり）］fisika | ・ ［無理（な）（むり（な） ） ］mustahil/ tidak mungkin | ・ ［料理（りょうり）］masakan/ memasak | 由 | ①ユ | ・［経由（けいゆ） ］melalui / via | 例：「景都経苗契談行きのバス」",
+  "2": "【2】 正解2♥ | 湿度「しつど」kelembapan | 皆本の買は気温も湿度も驚くて遍ごしにくい。 | Musim panas di Jepang suhunya tinggi dan lembap sehingga tidak nyaman untuk | dilewati. | 漢字 | 湿①シツ／シッ | ・ ［湿気（しっき／しっけ） ］kelembapan / hawa lembap | ②しめ（る/らす） | ・ ［湿る］ menjadi lembap/basah | 例：「温った製気」「洗種物がまだ違っている」 | ・ ［湿らす］ membasahi / melembapkan | 例：「タオルをで違らす」 | 度①ド | ・［温度（おんど）］suhu | ・［速度（そくど）］kecepatan | ・［程度（ていど）］tingkat / sejauh mana | ・［〜度］“kali /~derajat | 例：「1度、2度」「この部屋の温度は18度です」 | 「この簡には一産来たことがあります」 | ②タク | ・［支度（したく）］persiapan / bersiap-siap | 例：「支度ができたら、山かけよう」 | ③たび | ・［〜度］ waktu / kesempatan | 例：「盛う産に、我が好きになる」 | 2",
+  "3": "【3】正解 1V | 足りる「たります」 | （定りる）） cukup/ memadai | これで足りますか。どうですか。 | Apakah ini cukup? Bagaimana menurutmu？ | 漢字 | 足①ソク | ・ ［遠足（えんそく） ］ darmawisata/ piknik sekolah | ・［不足（ふそく）］kekurangan/ ketidakcukupan | ・［〜足］pasang （kata bantu bilangan untuk sepatu atau kaus kaki） | 例：「1麺、2麺」 | ②ゾク | ・［満足（な）（まんぞく（な））］puas/memuaskan | ③あし | ・［足］ kaki | ・［足跡（あしあと）］jejak kaki | ④た（りる／す） | ・［足りる］ | 例：「1勢筒で違りる」「能りが違りない。まだ能い」「経験が違りない」 | ・ ［足す］ menambah/ menjumlahkan | 例：「5に6をすと11になる」「きとうを歩しして替くした」 | 【4）正解 3 ♥ | 否定「ひてい」＜否定（する） > menyangkal/ membantah | その譲学は離婚のうわさを番提した。 | Penyanyi itu membantah rumor perceraiannya. | 漢字 | 否ヒ | ・［番是（する）］",
+  "4": "否定（ひてい）= menyangkal / penyangkalan.",
+  "5": "【5】 | 正解 2 | 小型「こがた」 | ukuran kecil | 被はぶ重の発行機を持っている。 | Dia memiliki pesawat terbang berukuran kecil. | 漢字 | 小 | ①ショウ | ・［小］ kecil 例：「箱の大きさは大と小がある」 | ・［小学生（しょうがくせい）］siswa SD | ・［小学校（しょうがっこう）］Sekolah Dasar （SD） | ・［小数（しょうすう）】bilangan desimal | ・［小説（しょうせつ） ］novel | ・［小便（しょうべん）］air seni/ kencing | ・［最小（さいしょう） ］paling kecil/minimal | ・ ［縮小（しゅくしょう） ］reduksi/ pengecilan | ・［大小（だいしょう）］besar dan kecil | ②ちい（さい） | ・［小さい］kecil | ③こ | ・［小遣い（こづかい）］uang jajan / uang saku | 4 | ・［小包（こづつみ） ］paket/parsel | ・［小鳥（ことり）］burung kecil | ・［小麦（こむぎ）］gandum | ・［小屋（こや）］gubuk / pondok | ・［小指（こゆび）］jari kelingking",
+  "6": "【6】正解 3 | 子育て「こそだて」 | mengasuh anak / membesarkan anak | 手贅てと仕事の間等をちゃんとするのは笑養だ。 | Sangat sulit untuk melakukan mengasuh anak dan pekerjaan sekaligus dengan | baik. | 漢字 | 壬 | ①シ | ・［子孫（しそん）］keturunan / anak cucu | ・［菓子（かし） ］camilan / kue/ permen | ・［女子（じょし）］perempuan/ wanita | ・ ［男子（だんし） ］laki-laki / pria | ・［調子（ちょうし）］kondisi / keadaan | ・［電子（でんし）］elektronik | ・ ［帽子（ぼうし）］topi | ②ジ | ・［王子（おうじ）］pangeran | ・ ［障子（しょうじ） ］pintu geser kertas （tradisional Jepang） | 5 | ③ス | ・［椅子（いす）］ kursi | ・［扇子（せんす）］kipas lipat | ・ ［様子（ようす）］keadaan / aspek / situasi | ④こ | ・［子］ anak | ・［子犬（こいぬ）］anak anjing | ・［子ども（こども）］anak-anak",
+  "7": "【7】正解4♥ | 早朝「そうちょう」pagi-pagi buta/ dini hari | こんな草額から階の静に火がたくさん並んでいます。 | Sejak pagi-pagi buta seperti ini, sudah banyak orang mengantre di depan toko. | 漢字 | 早①ソウ | ②サッ | ・［早速 | ・［早退（そうたい） ］pulang lebih awal （kerja/sekolah） | （さっそく）］segera / tanpa menunda | 6 | ③はや（い）／はや（まる／める） | ・［早い］ cepat/pagi | ・［早まる］ menjadi lebih cepat/ dipercepat | 例：「定が草まる」 | ・［早める］ mempercepat | 例：「予提を算める」 | ①チョウ | ・［朝刊（ちょうかん） ］koran pagi | ・［朝食（ちょうしょく）］ sarapan | ・［明朝（みょうちょう）］besok pagi | ②あさ | ・［朝］pagi | ・［朝ご飯（あさごはん）］ sarapan / makan pagi | ・［毎朝（まいあさ）］setiap pagi | ・［翌朝（よくあさ） ］besok paginya / pagi berikutnya | 「今朝」dibaca「けさ」 | 【8） 正解3",
+  "8": "孫（まご）= cucu.",
+  "9": "【9】 | 正解 4 | 比べて「くらべて」<比べる> | membandingkan | クラスの学遊為は前鶏に追べて後期のほうが言かった。 | Nilai rata-rata kelas di semester akhir lebih tinggi dibandingkan dengan semester | awal. | 漢字 | 比 | ①ヒ | ・［比較（ひかく）］perbandingan | ・ ［比較的（ひかくてき）］secara komparatif / lumayan | ②くら（べる） | ・ ［比べる］ membandingkan | 例：「基祥と今年の算貨をべる」「ワインの味を追べる」",
+  "10": "【10】 | 正解 2 | 希望「きぼう」 | harapan/ keinginan | 録が希望の笑学に容縮した。 | Adik perempuan saya lulus di universitas yang ia harapkan. | 漢字 | 希キ | ・［希望］ harapan | 望①ボウ | ・［望遠鏡（ぼうえんきょう） ］teropong / teleskop | ②のぞ（む） | ・ ［望む♪］ mengharapkan / menginginkan 例：「平和を望む」 | 8 | 【11） | 正解 1 | 肖然「とうぜん」 | sewajarnya/ sudah semestinya | 音上の災に最語をらのは善然のことだ。 | Menggunakan bahasa hormat （keigo） kepada orang yang lebih tua/ atasan adalah | hal yang sewajarnya. | 漢字 | 当①トウ | ・［皆時（とうじ） ］saat itu/ pada waktu itu | ・［当日（とうじつ） ］hari H/ hari yang ditentukan | ・［肖番（とうばん） ］giliran bertugas | ・［担当（たんとう） ］penanggung jawab/ dalam tugas | ・［適当（な）（てきとう（な））］ sesuai/ tepat/ asal-asalan",
+  "11": "当然（とうぜん）= tentu saja / sewajarnya.",
+  "12": "表して（あらわして）= menunjukkan / mewakili.",
+  "13": "必ず（かならず）= pasti.",
+  "14": "【14】 正解 3 | 期限「きげん」 | tenggat waktu/ batas waktu/ deadline | 串し込みの期まであと3省だ。 | Tersisa 3 hari lagi sampai tenggat waktu pendaftaran. | 漢字 | 期キ | ・［期間 | （きかん）］periode /jangka waktu | ・ ［期待（きたい）］harapan / ekspektasi | ・［延期（えんき）］penundaan | ・［学期（がっき）］semester | ・［時期（じき）］waktu/ musim/ periode | ・ ［定期券（ていきけん） ］tiket langganan （komuter） | 限 ①ゲン | ・［限界（げんかい） ］batas /limitasi | ・ ［限度（げんど）］batas / limit | ・［制限（せいげん） ］pembatasan / restriksi | ・［無限（むげん） ］tanpa batas / tak terhingga | ②かぎ（る） | ・［限る］ terbatas / membatasi 例：「試験は時間が限られている」 | 11",
+  "15": "【15】 | 正解 4 V | 翌日「よくじつ」 | hari berikutnya/ esok harinya | 委はお満を歓みすぎた麺旨はいつも質が痛いと言ら。 | Ayah selalu bilang kepalanya sakit pada hari berikutnya setelah terlalu banyak | minum alkohol. | 漢字 | 翌ヨク | ・［翌～］berikutnya | 例：「翌年」「翌月」「翌週」「翌朝」 | 旦 | ①ニチ | ・［日〜］例：「日米」Jepang dan AS，「日英」Jepang dan Inggris | ・［日時（にちじ） ］ tanggal dan waktu | ・［日常（にちじょう）］sehari-hari | ・［日曜日（にちようび）］hari Minggu | ・［日用品（にちようひん）］barang kebutuhan sehari-hari | ・［毎日（まいにち）］setiap hari | ・［明後日（みょうごにち／あさって）］lusa/ hari setelah besok | ②ニツ | ・［日〜］例：「日韓」Jepang dan Korea，「日中」 Jepang dan China | ・［日課（にっか）］tugas/kegiatan sehari-hari | ・［日記（にっき）］buku harian/ jurnal | ・［日光（にっこう）］sinar matahari | ・［日程（にってい） ］agenda/ jadwal harian | ・［日本（にっぽん／にほん）］Jepang | ③ジツ",
+  "16": "【16】 正解 4 | 庭「にわ」 halaman / taman | 暑になると、蒙の選に選しい花がたくさん咲く。 | Ketika musim semi tiba, banyak bunga indah mekar di halaman rumah. | 漢字 | 庭ニワ | ・［庭］ halaman / taman | 瓩①テイ | ・［家庭（かてい） ］rumah tangga/ keluarga | ・［校庭（こうてい）］halaman sekolah | ②にわ | ・ ［庭］ halaman/ taman | 13 | 第3回",
+  "17": "【17】 正解3♥ | 流れて「ながれて」く流れる）>mengalir/（musik） diputar | 産岡には静かな普葉が流れている。 | Di dalam toko, musik yang tenang sedang diputar. | 漢字 | 流①リュウ | ・［流域（りゅういき）］daerah aliran sungai/ lembah | ・ ［流行（りゅうこう） ］tren / gaya/fashion | ・［一流（いちりゅう） ］kelas satu / terkemuka | ・［電流（でんりゅう）］arus listrik | ②なが（れる／す） | ・［流れる］ mengalir 例：「が読れる」「竜気が荒れる」「らわさが読れる」 | ・［流す］ mengalirkan / menguras / membilas 例：「家を流す」",
+  "18": "【18】正解 3 | 郵便「ゆらびん」pos/ surat | 善類を避後で送ります。 | Saya akan mengirimkan dokumen melalui pos. | 漢字 | 郵ユウ | ・［郵便局（ゆうびんきょく）］kantor pos | 便 | ①ベン | ・［便］ kemudahan/fasilitas / tinja | 例：「髪通のがいい／無い」「箯が出ない」 | ・［便所（べんじょ） ］toilet /kamar kecil | ・［便利 | 一（な） | （べんり（な）） ］praktis / mudah | ・［不便 | （な）（ふべん（な） ） ］tidak praktis / menyulitkan | ②ビン | ・［便］ surat/ penerbangan | 14 | 例：「航塗箯」pos udara， | 「船箯」 jalur laut，「発配後」 layanan pengiriman ke rumah， | 「3時の箯の飛行機に乗る」 | ・［種羹（びんせん） 1 kertas surat",
+  "19": "【19】 正解4く | 出版「しゅっぱん」＜出版（する） ＞ menerbitkan / publikasi | 製年、新40穏前の茶や雑誌が出殿されている。 | Setiap tahun, sekitar 4 miliar buku dan majalah diterbitkan. | 漢字 | 出 ①シュツ | ・［出場（しゅつじょう）］partisipasi/ keikutsertaan （dalam | kompetisi/pertandingan） | ・［出題（しゅつだい）］pembuatan soal （ujian） | ・［外出（がいしゅつ） ］pergi ke luar | ・［支出（ししゅつ） ］pengeluaran / biaya | ・［提出（ていしゅつ） ］penyerahan / pengajuan | ・［輸出（ゆしゅつ）］ekspor | ②シュツ | ・［出勤（しゅっきん）］pergi bekerja | ・［出身（しゅっしん）］asal （daerah/sekolah） | ・［出席（しゅっせき）］kehadiran | ・［出張（しゅっちょう）］perjalanan dinas | ・［出発（しゅっぱつ） ］keberangkatan | ③で（る） | ・［出る］ keluar/ muncul | ・［日の出（ひので）］matahari terbit | ④だ（す） | ・ ［出す］ mengeluarkan/ menyerahkan | ・［貸し出す（かしだす）］meminjamkan | ・［飛び出す（とびだす）］melompat keluar / berlari keluar | ・［引き出し （ひきだし）］laci | ・［引き出す（ひきだす）］menarik （uang）/ mengeluarkan",
+  "20": "【20】正解1♥ | 星「ほし」bintang | あのビルの嵐上から量がれいに見えますよ。 | Dari atap gedung itu, bintang-bintang terlihat sangat indah Iho. | 漢字 | 星①セイ | ・［北極星（ほっきょくせい）］Bintang Utara | ②ほし | ・［星］ Bintang",
+  "21": "【21】 | 正解2♥ | 息子「むすこ」putra/ anak laki-laki | 笛特さんは、10年請に愛通事故で意学をくした。 | Pak Nakamura kehilangan putranya dalam kecelakaan lalu lintas 10 tahun yang lalu. | 漢字 | 息①ソク | ・［休息（きゅうそく） ］istirahat / jeda | ②いき | ・［息］napas 例：「息をする/吸う/はく」 | 子①シ | ・［子孫（しそん）］keturunan / anak cucu | ・［菓子（かし） ］camilan / kue/ permen | ・［女子（じょし）］perempuan/ wanita | ・［男子（だんし） ］laki-laki / pria | 16 | ・［調子（ちょうし）］kondisi/keadaan | ・ ［電子（でんし）］ elektronik | ・ ［帽子（ぼうし）］topi | ②ジ | ・［王子（おうじ） ］pangeran | ・ ［障子（しょうじ） ］pintu geser kertas （tradisional Jepang） | ③ス | ・［椅子（いす）］kursi | ・［扇子（せんす）］kipas lipat | ・［様子（ようす）］keadaan/ aspek/ situasi | ④こ | ・［子］ anak",
+  "22": "【22】 | 正解 | ：4 | 研究「けんきゅう」 studi/ penelitian | ケンさんは笑学で旨袋撃の粉発をしています。 | Ken sedang melakukan penelitian sastra Jepang di universitas. | 漢字 | 研ケン | ・［研修（けんしゅう） ］pelatihan / training | 究キュウ | ・ ［研究室（けんきゅうしつ） ］ruang dosen / laboratorium | 17 | 【23） | 正解 4 | 珍しい「めずらしい」jarang / tidak biasa / langka | となりの蒙の選に必しい糖が嘆いている。 | Di halaman rumah sebelah mekar bunga yang langka. | 漢字 | 珍 めずら（しい） | ・［珍しい」 | 例：「該しい勤物」「芩品は必しく草起きした」 | 【24） | 正解 1 | 禁止「きんし」＜禁止（する） > larangan/ melarang | 尊校では禁止されていることがたくさんある。 | Ada banyak hal yang dilarang di sekolah. | 漢字 | 禁キン",
+  "23": "珍しい（めずらしい）= langka / tidak biasa.",
+  "24": "禁止（きんし）= larangan.",
+  "25": "【25】 正解4♥ | 周囲「しゅうい」 | sekeliling / lingkungan sekitar | そのビルは簡崩の鎖境のことも答えて建てられた。 | Gedung itu dibangun dengan mempertimbangkan lingkungan sekitarnya juga. | 漢字 | 周①シュウ | ・［周辺（しゅうへん） ］daerah sekitarnya | ・［一周（いっしゅう）】 satu putaran 例：「笹菜に一篇の係をする」 | ・［〜周］~ | putaran 例：「1間、2肩」 | ②まわ（り） | ・［周り］ sekeiling / sekitar 例：「蒙の開りに花を植える」 | 囲 ①イ | ・［範囲（はんい）］ cakupan/ jangkauan / ruang lingkup | ②かこ（む） | ・［囲む］mengelilingi/ mengepung 例：「記著が皆稲を崩んでいる」",
+  "26": "【26】 | 正解2 | v | 栄えた「さかえた」 （栄える）） | makmur/ berkembang pesat | この詩は洗音時代に薬えた。 | Kota ini makmur pada zaman Edo. | 漢字 | 栄①エイ | ・［栄養（えいよう）］nutrisi / gizi | ②さか（える） | ・［栄える］ makmur / berkembang 例：「町が栄える」「恐竜が栄えた時代」 | 19 | 【27） | 正解2 | 真っ赤「まっか」（真っ赤（な） ＞ merah menyala/ merah tua | 報安はお満をんで讃が責っ赤になった。 | Wajahnya menjadi merah menyala setelah dia minum alkohol. | 漢字 | 真①シン | ・［真空（しんくら） ］vakum/ hampa udara | ・［真剣（な）（しんけん（な））］serius / sungguh-sungguh | ②ま | ・［真～］ benar-benar / tepat 例：「責ん帯」「責ん静」「責っ旨」 | 赤①セキ | ・ ［赤道（せきどう）］khatulistiwa | ②あか／あか（い） | ・［赤］ merah （kata benda）例：「祭倉募」「祭と薫」",
+  "27": "真っ赤（まっか）= merah sekali.",
+  "28": "【28】 | 正解 3 | 指示「しじ」 instruksi/ petunjuk | 災談の際は、篠賞の指示に従ってください。 | Jika terjadi kebakaran, harap ikuti instruksi dari petugas yang bertugas. | 漢字 | 指①シ | ・［指定（してい）］penunjukan / penetapan | ・［指導（しどう） ］bimbingan / pengarahan | ②ゆび | ・［指］ jari | ・［指輪（ゆびわ）］cincin | ・［親指（おやゆび）】ibu jari / jempol | ③さ（す） | ・［指す］ menunjiuk 例：「耐計の針が3時を指す」「突節が若を指している」 | 20 | 丞 | ①ジ | ・［掲示（けいじ） ］pengumuman/ buletin | ②しめ（す） | ・ ［示す］ menunjukkan | 例：「初を栄す」「芳筒を栄す」",
+  "29": "【29】正解1 | 破って「やぶって」く破る）） | memecahkan/ merobek/melanggar | 雛火は髪ガラスを被って、選げたようだ。 | Pelakunya sepertinya melarikan diri setelah memecahkan kaca jendela. | 漢字 | 破 | ①ハ | ・［破片（はへん）］pecahan/fragmen | ②やぶ（れる／る） | ・［破れる］ robek /pecah例：「箙が破れる」 | ・［破る］ merobek/ memecahkan | 例：「雛を被る」 | 【30） | 正解3 | 明後日 | 「みょうごにち／あさって」 lusa/hari setelah besok | では、 | 領後音あらためてご進絡いたします。 | Baiklah, saya akan menghubungi Anda kembali lusa | 漢字 | 明①メイ | ・［明確（な）（めいかく（な） ） ］jelas / akurat | ・［証明（しょうめい）］bukti / sertifikasi | ・［説明（せつめい）］penjelasan | ・［透明（な）（とうめい（な））］ transparan / bening | ②ミョウ | ・［明日（みょうにち／あした／あす）］besok",
+  "30": "明後日（みょうごにち）= lusa.",
+  "31": "床（ゆか）= lantai.",
+  "32": "【32】 | 正解 1 | 血圧「けつあつ」 tekanan darah | 髪は盗産が言いので、薬を飯んでいる。 | Ayah saya minum obat karena tekanan darahnya tinggi. | 漢字 | 血 | ①ケッ | ・［血液（けつえき）］darah | ・［出血（しゅっけつ） ］pendarahan | ・［輸血（ゆけつ）］transfusi darah | ②ケッ | ・［血管（けっかん） ］pembuluh darah | ③ち／ぢ | •［血］ darah 例：「シャツにがついている」「算塩が出た」 | 圧①アツ | ・［圧力（あつりょく） ］tekanan | 23 | ・ ［気圧（きあつ）］tekanan udara | ・ ［水圧（すいあつ）］tekanan air | ・ ［電圧（でんあつ）］tegangan listrik / voltase | ②アッ | ・［圧縮 | （あっしゅく）］kompresi/ penekanan | 24 | 第5回",
+  "33": "【33】 正解2♥ | 経済「けいざい」 ekonomi | 賃覚は笑学で経務を勉強している。 | Putra sulung saya sedang belajar ekonomi di universitas. | 漢字 | 経ケイ | ・［経営（けいえい） ］manajemen / pengelolaan | ・［経験（けいけん）］pengalaman | ・［経由（けいゆ）］melalui / via | ・［神経（しんけい）］saraf | 済 ①サイ/ザイ | ・［経済］ ekonomi | ②す（む／ます） | ・［済む］ selesai / tuntas 例：「仕事が済む」 | ・［済ます／済ませる］ menyelesaikan 例：「レジで支払いを済ます」 | ③ず（み） | ・［～済み］ | 例：「この商監は検査済みで愛茎だ」 | Produk ini sudah diperiksa dan aman.",
+  "34": "【34】 | 正解 4 V | 営んで「いとなんで」（営む） | 袋はぶさい空場を管んでいる。 | Ayah saya mengelola sebuah pabrik kecil. | menjalankan （bisnis） / mengelola | 漢字 | 営 | ： ①エイ | ・ ［営業（えいぎょう） 】operasi bisnis / penjualan | ・［経営（けいえい） ］manajemen / pengelolaan | ②いとな（む） | ・［営む］ | 25 | 例：「薬高を営む」 menjialankan apotek， | 「濃薬を営む」 bertani sebagai profesi",
+  "35": "【35】正解 4 V | 支出「ししゅつ」pengeluaran/ biaya | 挙育は支田が蓼くて、産落が笑養だ。 | Pengeluaran bulan ini banyak, sulit untuk mencukupi kebutuhan hidup. | 漢字 | 支 | ①シ | ・［支持（しじ）］dukungan | ・［支度（したく）］persiapan / bersiap-siap | ・［支点（してん）］ titik tumpu | ・［支店（してん）］kantor cabang | ・［支配（しはい）］kontrol/ penguasaan/ dominasi | ・［支払う（しはらう）］membayar | ②ささ（える） | ・［支える］ menopang/ mendukung | 例：「笑い雑が産根を芰える」「社賞が釜社を芰える」 | 出 | ①シュツ | ・ ［出場（しゅつじょう）］partisipasi / keikutsertaan | ・［出題（しゅつだい） ］pembuatan soal （ujian） | ・［外出（がいしゅつ） ］pergi ke luar | ・［提出（ていしゅつ） ］penyerahan / pengajuan | ・［輸出（ゆしゅつ）］ekspor | ②シュツ | ・［出勤（しゅっきん）］pergi bekerja | ・［出身（しゅっしん） ］berasal dari | ・［出席（しゅっせき）］kehadiran | ・［出張（しゅっちょう）］perjalanan dinas",
+  "36": "【36】 | 正解1♥ | 鋭い「するどい」 | tajam / runcing | この種は残が強いので、雑意してください。 | Ujung tongkat ini tajam, harap berhati-hati. | 漢字 | 鋭 ①エイ | ・［鋭角（えいかく） ］sudut lancip | ②するど（い） | ・［鋭い］ | 例：「鋭いナイフ」「雛い質簡」「彼は鋭い顔脳を持っている」",
+  "37": "【37】正解 2♥ | 苦労「くろう」＜苦労（する） ＞ kesulitan / bekerja keras/ jerih payah | 職は普等して親を着ててくれた。 | Ibu saya bekerja keras membesarkan saya. | 漢字 | 苦①ク | ・［苦情（くじょう）］keluhan / komplain | ・［苦心（くしん）］kerja keras / susah payah | ・ ［苦痛（くつう）］rasa sakit / penderitaan | ②くる（しい）／くる（しむ／しめる） | ・［苦しい］menderita/ sesak/ sulit | 例：「設鐘をきると意が善しい」 | 27 | ・［苦しむ］ menderita例：「弱気に苦しむ」 | ・ ［苦しめる］ menyiksa/ menyusahkan | ③にが（い） | ・［苦い］pahit （rasa）例：「善い薬」 | 労ロウ | ・［労働（ろうどう） ］tenaga kerja / buruh",
+  "38": "【38】 | 正解 2v | 外科「げか」bagian bedah/ departemen bedah | やけどは外科で診てもらってください。 | Silakan periksakan luka bakar Anda ke bagian bedah. | 漢字 | 外①ガイ | ・［外交（がいこう）］diplomasi | ・［外国 | 1（がいこく） ］ negara asing / luar negeri | ・ ［外出（がいしゅつ） ］pergi ke luar | ・［外部（がいぶ）］bagian luar / eksternal | ・［海外（かいがい） ］luar negeri / seberang laut | ・［郊外（こうがい） ］pinggiran kota / sub-urban | ・［～外］luar～例：「室外」lar ruangan， | 「髄歯外」 luar jangkauan， | 「社外」luar kantor/perusahaan | ②ゲ | ・［外科］bagian bedah | ③そと | ・［外］luar 例：「部屋の外」 | ・［外側（そとがわ） ］sisi luar / bagian luar | ④はづ（れる／す） | ・［外れる］ terlepas / copot 例：「ボタンが外れる」 | ・［外す］ melepas / meninggalkan 例：「めがねを外す」「蓆を外す」 | 科カ | ・［科学（かがく）］ilmu pengetahuan / sains | ・［～科］ bagian/ departemen",
+  "39": "忘れ物（わすれもの）= barang tertinggal.",
+  "40": "【40】 正解3く | 夫「おっと」 suami | 戦の笑は鎌栄賞です。 | Suami saya adalah pegawai bank. | 漢字 | 夫①フ | ・［夫妻（ふさい）］suami istri/ pasutri | ②フウ | ・［夫婦（ふうふ）］suami istri | ・［工夫（くふう）］ide/ akal/ rancangan | ③おっと | ・［夫］suami | 30 | 第6回",
+  "41": "【41】 正解 3 | 引退「いんたい」例引退（する） > pensiun / mengundurkan diri | 「難羊は今年限りで詳することを発表した。 | Pemain T mengumumkan akan pensiun pada akhir tahun ini. | 漢字 | 引①イン | ・［引用（いんよう）］kutipan/ sitasi | ・［引力（いんりょく）］gravitasi | ②ひ（く） | ・［引く］ menarik / menarik garis/ menggambar garis 例：「線を引く」 | ・ ［辞書を引く］mencari di kamus | 退①タイ | ・［退院（たいいん） ］keluar dari rumah sakit | ・ ［退屈（な） （たいくつ（な）） ］membosankan/ jenuh | ②しりぞ（く） | ・［退く］mundur/ mengundurkan diri | 例：「立播氏は往選の位を選いた」 | 【42） | 正解1 | 涙「なみだ」 | air mata | さあ、質をふきなさい。 | Ayo, hapuslah air matamu. | 漢字 | 涙なみだ | ・ ［涙］ air mata | 例：「選がる」「難しくて賞が止まらない」 | 31",
+  "42": "涙（なみだ）= air mata.",
+  "43": "【43】正解4♥ | 泊まった「とまった」<泊まる＞＞menginap （di hotel/penginapan） | 景都で苦い旅館に酒まった。 | Saya menginap di ryokan （penginapan tradisional Jepang） tua di Kyoto. | 漢字 | 泊 ①ハク／バク | ・［宿泊（しゅくはく） ］akomodasi / penginapan | ・［〜泊］“malam （menginap） | 例：「一番、三活」「学番両音の旅」 | ②と（まる／める） | ・ ［泊まる］ menginap例：「ホテルに泊まる」 | ・［泊める］ memberi tumpangan menginap | 例：「段だちを旨券の蒙に痛める」 | 【44） | 正解2 | 立派「りっぱ」 | ＜立派（な） > hebat /luar biasa/ megah/ terhormat | 美字はクラスを代表して、立派なスピーチをした。 | Eiko mewakili kelasnya memberikan pidato yang luar biasa. | 漢字 | 立 | ①リッ | ・［国立（こくりつ）］negeri / nasional | ・［私立（しりつ）］swasta | ・［白立（じりつ） ］kemandirian/ mandiri | ・［対立（たいりつ）］pertentangan/ konfrontasi | ・［独立（どくりつ）］merdeka/ independen | ②リッ",
+  "44": "立派（りっぱ）= hebat / bagus.",
+  "45": "【45】 正解 4 | く | 検査「けんさ」 | pemeriksaan / pengecekan | 袋はがんの機査のために受説した。 | Ayah saya dirawat di rumah sakit untuk pemeriksaan kanker. | 漢字 | 検ケン | ・［検討（けんとう）］pertimbangan / pemeriksaan / penelitian | 査サ | ・［調査（ちょうさ）］investigasi / survei /penelitian",
+  "46": "【46】 正解 4 | V | 氏名「しめい」nama lengkap | ここに民名を書いてください。 | Tolong tuliskan nama lengkap Anda di sini. | 漢字 | 氏シ | ・［～氏］ Tuan~/Mr.～例：「田中氏」 | 名①メイ | ・［名作（めいさく）］karya besar / mahakarya | ・［名詞 | （めいし） ］kata benda / nomina | ・［名刺 | （めいし）］kartu nama | ・［名所（めいしょ）］ tempat terkenal/ objek wisata | ・［名人（めいじん）］pakar / ahli/ master | ・［名物（めいぶつ）］produk khas / ciri khas daerah | ・［題名（だいめい）］judul | ・［有名（な）（ゆうめい（な））］ terkenal | 33 | ・［〜名］“orang （penghitung orang） | 例：「1名、2名」 | ②ミョウ | ・［苗字（みょうじ）］nama keluarga/ marga | ③な | ・［名］ nama | ・［名前（なまえ） ］nama",
+  "47": "【47】正解2 | .く | 伝えて「つたえて」く伝える＞ menyampaikan/ memberitahu | 菜特さんに3時ごろ竜書すると張えてください。 | Tolong sampaikan kepada Pak/Bu Kimura bahwa | saya akan menelepon sekitar jam 3. | 漢字 | 伝①デン | ・ ［伝記（でんき）］biografi | ・［伝言（でんごん）］pesan | ・ ［伝染（でんせん）］penularan /infeksi | ・ ［伝統（でんとう）］tradisi | ・ ［宣伝（せんでん） ］iklan / propaganda | ②つた（わる／える） | ・ ［伝わる］ dikabarkan / tersampaikan /menyebar 例：「うわさが伝わる」 | ・［伝える］ menyampaikan | 例：「アナウンサーがニュースを供える」 | 「手伝う」dibaca「てつだら」 | 34",
+  "48": "【48】 | 正解3♥ | 患者「かんじゃ」pasien | その送着は態箸に人気がある。 | Dokter itu populer di kalangan pasien. | 漢字 | 患カン | ・［急患（きゅうかん） ］pasien gawat darurat | 者 | ①シャ | ・［医者（いしゃ） ］dokter （medis） | ・［科学者（かがくしゃ） ］ilmuwan / saintis | ・ ［学者（がくしゃ）］sarjana/ akademisi | ・［記者（きしゃ）］reporter/ wartawan | ・［後者（こうしゃ）］yang terakhir disebut | ・［前者（ぜんしゃ） ］yang pertama disebut | ・［筆者（ひっしゃ）］penulis/ pengarang | ・［役者（やくしゃ） ］aktor / aktris | ・［〜者］~ | orang 例：「参加者」「出席者」「研究者」 | ②ジャ | ・［患者］ pasien | ③もの | ・［者］ orang 例：「業の箸に進絡する」「著い署」 | ・［〜者］ | 例：「あわて者」orang yang ceroboh， | 「勧き箸」pekerja keras， | 「惹け著」 orang pemalas",
+  "49": "【49】 | 正解 2 v | 沈んだ「しずんだ」く沈むト＞ | 盛の高こうに多省が洗んだ。 | Matahari terbenam di balik gunung・ | 漢字 | tenggelam/ terbenam | 沈①チン | ・ ［沈没（ちんぼつ）］karam / tenggelam | ②しず（む／める） | ・ ［沈む♪］ tenggelam/ terbenam | 例：「笑陽が抗む」「際で船が挑む」 | ・ ［沈める］ menenggelamkan | 例：「篠を嵐色の湯に挑める」",
+  "50": "【50】正解 3 | 個人「こじん」 | individu/ perorangan | 個人の情報がられないこともある。 | Inf ormasi pribadi terkadang tidak terlindungi， | 漢字 | 個コ | ・［～個］（kata bantu bilangan untuk benda kecil dan bulat）例：「1個、2個」 | 人 | ①ジン | ・［人口（じんこう） ］populasi/ jumlah penduduk | ・［人工（じんこう）］buatan manusia/ artifisial | ・［人事（じんじ） ］personalia / urusan SDM | ・［人種（じんしゅ） ］ras | ・［人生（じんせい）］kehidupan manusia | ・［人造（じんぞう） 】buatan manusia/ tiruan | ・［人物（じんぶつ） 】tokoh / sosok orang | ・［人命（じんめい） ］nyawa manusia | ・［人類（じんるい） ］umat manusia / kemanusiaan | 36 | ・［詩人（しじん） ］penyair/ pujangga | ・［主人（しゅじん） ］tuan/ pemilik/ suami | ・［知人（ちじん）］kenalan | ・［夫人（ふじん）］nyonya/istri （gelar hormat） | ・［婦人（ふじん） ］wanita/ kaum hawa | ・［名人（めいじん）］pakar/maestro | ・［友人（ゆうじん）］teman/ sahabat | ・［老人（ろうじん）］orang lanjut usia/lansia",
+  "51": "【51】正解 3 ♥ | 結果「けっか」 | hasil | 普接試験の結菓はご適簡後にお知らせします。 | Hasil ujian wawancara akan diberitahukan satu minggu kemudian. | 漢字 | 結 ①ケツ | ・［結論（けつろん）］kesimpulan | ②ケッ | ・［結局（けっきょく） ］akhirnya / pada akhirnya | ・［結婚 | （けっこん）］pernikahan | 37 | ③むす（ぶ） | ・［結ぶ］mengikat | 例：「くつのひもを結ぶ」「契約を結ぶ」 | 果①カ | ・［果実（かじつ） ］buah/ hasil | ・［効果（こうか）］efek/khasiat | ②は（たす） | ・［果たす］ mencapai /melaksanakan | 例：「新策を集たす」 | 「果物」dibaca「くだもの」 | 【52）正解 4 | 髪「かみ」rambut | あの箋の鎧い人が留さんですよ。 | Orang yang berrambut pendek itu adalah Tanaka san Iho. | 漢字",
+  "52": "髪（かみ）= rambut.",
+  "53": "連れて（つれて）= membawa / mengajak.",
+  "54": "相手（あいて）= lawan / pihak lain.",
+  "55": "決定（けってい）= keputusan.",
+  "56": "道具（どうぐ）= alat.",
+  "57": "【57】 正解3く | 含まれて「ふくまれて」く含む） mengandung/ termasuk | ここの家には、家券が蓼く答まれている。 | Air di sini mengandung banyak zat besi. | 漢字 | 含ふく（む／める） | ・［含む♪］ mengandung | 例：「ビタミンを蓼く答む野菜」 | ・［含める］ termasuk / memasukkan | 例：「参縮員は登資袋を答めて3,000です」 | 【58） | 正解2 | 予防「よぼら」 | pencegahan | 嵐来の予務には、うがいがいちばんいい。 | Berkumur adalah cara terbaik untuk mencegah flu. | 漢字 | 予ヨ | ・［予期 | （よき）］ekspektasi/ harapan | ・［予算（よさん）］anggaran/ budget | ・［予習（よしゅう） ］persiapan pelajaran baru | ・［予測（よそく）］prediksi/ perkiraan | ・［予定（よてい）］rencana | ・［予備 | （よび）］cadangan / persiapan | ・［予報 | （よほう） ］ramalan / prakiraan",
+  "58": "予防（よぼう）= pencegahan.",
+  "59": "【59】 | 正解4 | 主に「おもに」 | utamanya/ terutama/ secara utama | 青の容社ではに公計の仕事をしていました。 | Di perusahaan sebelumnya, saya utamanya mengerjakan peker jaan akuntansi. | 漢字 | 主①シュ | ・［主観的（しゅかんてき）］subjektif | ・［主人（しゅじん） ］tuan/ pemilik / suami | ②ズ | ・［坊主（ぼうず）］biksu Buddha | ③ぬし | ・［家主（やぬし）］pemilik rumah/ induk semang | ④おも（な） | ・［主な］ utama / penting",
+  "60": "【60】正解 1 | 国籍「こくせき」kewarganegaraan | 画籍はどちらですか。 | Apa kewarganegaraan Anda？ | 漢字 | 国 | ①コク | ・［国王（こくおう）］raja | ・［国語（こくご）］bahasa nasional/ bahasa Jepang | ・ ［国際（こくさい）］internasional | ・［国民（こくみん） ］rakyat / warga negara | ・［国立（こくりつ）］negeri /nasional | ・［外国（がいこく） ］luar negeri | ・［帰国（きこく）］pulang ke negara asal | ・［共和国（きょうわこく） ］republik | ・［〜か国］（penghitung jumlah negara）例：「1か国、2か国」 | 44 | ②コッ | ・［国境（こっきょう） ］perbatasan negara | ③ゴク | ・［天国（てんごく） ］surga | ④くに | ・［国］ negara/ negeri | 籍セキ | ・［書籍（しょせき） ］buku/Pustaka",
+  "61": "【61】 正解3く | 登って「のぼって」 | ＜登る＞ | mendaki/memanjat | いつか富玉山に蟹ってみたい。 | Suatu saat nanti saya ingin mencoba mendaki Gunung Fuji. | 漢字 | 登①ト | ・［登山（とざん） ］mendaki gunung | ②トウ | ・［登場（とうじょう） ］penampilan / kemunculan | ・［登録（とうろく） ］pendaftaran / registrasi | ③のぼ（る） | ・［登る］ mendaki",
+  "62": "【62】 | 正解 3 v | 関係「かんけい」 hubungan / relasi | この空社は、社員の民簡関様がとてもいい。 | Perusahaan ini memiliki hubungan antarmanusia （karyawan） yang sangat baik. | 漢字 | 関カン | ・［関心（かんしん） ］minat /ketertarikan | ・［関連（かんれん） ］hubungan / koneksi | ・［機関（きかん） ］organisasi / institusi / mesin | ・ ［機関車（きかんしゃ）］lokomotif | 45 | ・［玄関（げんかん） ］pintu masuk /lobi depan | ・［税関（ぜいかん） ］bea cukai | 係①ケイ | ・［関係］hubungan | ②かかり | ・ ［係］ tugas / tanggung jawab 例：「篠の人」 | ③がかり | ・［～係］ orang yang bertanggung jawab atas ~ | 例：「忘れ物係」bagian barang hiang",
+  "63": "【63】 正解2 | 机「つくえ」meja tulis/meja kerja | 机をきちんと金べてください。 | Tolong rapikan/sejajarkan meja-mejanya. | 漢字 | 机つくえ | ・［机］ meja",
+  "64": "【64】 正解4♥ | 芸術家「げいじゅつか」 seniman / artis | ここは芸器蒙たちが薬まる補だ。 | Ini adalah toko tempat para seniman berkumpul. | 漢字 | 芸ゲイ | ・［芸能（げいのう）］dunia hiburan / show business | ・［園芸（えんげい）］berkebun / hortikultura | 術ジュツ | ・［技術（ぎじゅつ） ］teknik / teknologi / keahlian | 家①カ | ・ ［家族（かぞく）］keluarga | 46 | ・［家庭 | （かてい） ］rumah tangga | ・［～家］ist /“an （akhiran profesi） | 例：「小読篆」「鼓治蒙」「普薬募」「努力篆」 | ②ケ | ・［～家］ keluarga /klan | 例：「癒帯」 klan Tokugawa | ③いえ | ・［家］ rumah | ④や | ・［家主（やぬし） ］pemilik rumah / induk semang | 47 | 第9回",
+  "65": "【65】 正解3く | 指「ゆび」jari | 野菜を動るとき、指をけがしてしまった。 | Saya melukai jari saya saat sedang memotong sayuran. | 漢字 | 指①シ | ・［指示（しじ）］instruksi/ petunjuk | ・［指定（してい）］penunjukan / penetapan | ・［指導（しどう） ］bimbingan / pengarahan | ②ゆび | ・［指輪（ゆびわ）］cincin | ・ ［親指（おやゆび）］ibu jari/ jempol | ③さ（す） | ・［指す］ menunjuk | 例：「時計の針が3時を指す」「突節が若を指している」",
+  "66": "【66】 | 正解2 | 満足「まんぞく」 | ＜満足（する） | > | puas/memuaskan | 間の調番では蕎難できる結菓が得られなかった。 | Kami tidak mendapatkan hasil yang memuaskan dalam penelitian kali ini. | 漢字 | ①マン | ・［満員（まんいん） ］penuh （oleh orang）/ tidak ada tempat kosong | ・ ［満点（まんてん）］nilai sempurna / skor penuh | ・［不満（な） | （ふまん（な） ） ］tidak puas / tidak senang | ②み（ちる／たす） | ・［満ちる］ menjadi penuh | 例：「旨律に満ちた態度」 | ・［満たす］memenuhi/ mengisi | 例：「おふろのお湯を満たす」 | 48 | 足（ソク | ・ ［遠足（えんそく） ］ darmawisata/ piknik sekolah | ・［不足（ふそく）］kekurangan / ketidakcukupan | ・［〜足］~」 | pasang （kata bantu bilangan sepatu/kaus kaki） 例：「1足、2足」 | ②ゾク | ・ ［満足（な）］puas/ memuaskan | ③あし",
+  "67": "【67】 正解 4 V | 曲がって「まがって」＜曲がる）> belok / bengkok /miring | ネクタイが曲がっていますよ。 | Dasi Anda miring Iho, Pak. | 漢字 | 曲①キョク | ・［曲］ lagu /potongan musik例：「モーツァルトの曲」 | ・［由線（きょくせん）］ garis lengkung | ・［作曲（さっきょく） ］mengarang lagu / komposisi musik | ②ま（がる／げる） | ・［曲がる］ belok / membengkok | 例：「若へ歯がる」「質を歯がる」 | ・［曲げる］ membengkokkan | 例：「腹を歯げておじぎをする」 | 49 | 【68） | 正解1く | 領収書「りょうしゅらしょ」 tanda terima/kuitansi/ receipt | 領暇書は捨てないでとっておいてください。 | Tolong simpan kuitansinya dan jangan dibuang・ | 漢字 | 領リョウ | ・［領事（りょうじ）］konsul | ・［～領］ wilayah~/ teritori～例：「フランス領の島」 | 収①シュウ | ・［収穫（しゅうかく） ］panen | ・［収入（しゅうにゅう）］pendapatan /penghasilan | ・［吸収（きゅうしゅう） ］penyerapan / absorbsi",
+  "68": "領収書（りょうしゅうしょ）= kuitansi / struk.",
+  "69": "神社（じんじゃ）= kuil Shinto.",
+  "70": "【70】正解2♥ | 涼しく「すずしく」く涼しい） sejuk | 築道は惹しくなるそうだ。 | Kabarnya minggu depan akan menjadi sejuk. | 漢字 | 涼 すず（しい） | ・［涼しい］sejuk | 51",
+  "71": "【71】 正解4v | お支払い「おしはらい」（支払ら＞ pembayaran/ membayar | こちらの階監はこちらのレジでお支払いください。 | Silakan bayar produk ini di kasir sebelah sana. | 漢字 | 支①シ | ・［支持（しじ）］ dukungan / support | ・［支出（ししゅつ） ］pengeluaran/ biaya | ・［支度（したく）］persiapan / bersiap-siap | ・［支点（してん）］ titik tumpu | ・［支店（してん）］kantor cabang | ・［支配（しはい）］peraturan/ kontrol/ penguasaan | ・［支払い（しはらい）］pembayaran | ②ささ（える） | ・［支える］ menopang/ mendukung | 例：「い雑が産根を芰える」「社員が釜社を斐える」 | 払 はら（う） | ・［払う］ membayar / menyikat / membersihkan | 例：「竜気料盛を載う」「ブランで箙についたほこりを取う」",
+  "72": "【72】 正解 4 V | 特急「とっきゅう」 ekspres terbatas （kereta） | ここから策景まで軽意に乗れば1時間で行ける。 | Jika naik kereta ekspres terbatas, kamu bisa sampai ke Tokyo dari sini dalam | waktu satu jam. | 漢字 | 特 | ①トク | ・［特殊（な） | （とくしゅ（な） ） ］khusus / unik / spesifik | ・［特色（とくしょく）］karakteristik / ciri khas | ・［特長（とくちょう） ］kelebihan / keunggulan/ merit | 52 | ・［特徴（とくちょう）］fitur/ciri/ karakteristik | ・［特定（とくてい）］ spesifikasi/ penentuan / tertentu | ・ ［特に］ khususnya/ terutama | ・ ［特売（とくばい）］obral/ penjualan murah | ・［特別（な／の）（とくべつ（な／の） ） ］spesial /istimewa | ・［独特（どくとく） ］unik / orisinal | ②トッ | ・［特許（とっきょ） ］paten | 急①キュウ | ・［急激（な） （きゅうげき（な） ） ］mendadak/ drastis/ tiba-tiba | ・［急行（きゅうこう）］kereta ekspres | ・［急速（な）（きゅうそく（na）） ］cepat/ pesat | ・ ［急に］ tiba-tiba/mendadak | ・［至急（しきゅう）］segera/ secepatnya | ②いそ（ぐ）",
+  "73": "【73】 正解 2 v | 困る「こまる」kesulitan/ dalam masalah | 荷か菌ることがあったら、言ってください。 | Jika ada sesuatu yang menyulitkan, tolong katakan. | 漢字 | 困 | ①コン | ・［困難（こんなん）］kesulitan / kesukaran | ②こま（る） | ・［困る］ kesulitan/ bermasalah",
+  "74": "【74】 正解 3 | 注目「ちゅうもく」 perhatian / atensi | 離をわない竜字善着が雑質を棄めている。 | Buku elektronik yang tidak menggunakan kertas sedang menarik perhatian. | 漢字 | 注①チュウ | ・［注意（ちゅうい）］perhatian / peringatan / hati-hati | ・ ［注射（ちゅうしゃ） ］suntikan/injeksi | ・［注文（ちゅうもん）］pesanan / order | ②そそ（ぐ） | ・ ［注ぐ］ menuangkan / mencurahkan 例：「ちゃわんに湯を注ぐ」「子どもに愛 | 情を注ぐ」 | 目①モク | ・［目次（もくじ）］daftar isi / tabel konten | ・［目的（もくてき）］tujuan/ maksud | ・［日標（もくひょう） ］sasaran/ target / goal | ・［科目（かもく）］mata pelajaran sekolah | ②め | ・［目］ mata | ・［見た日（みた目）］penampilan / aspek luar | 54 | 例：「このケーキは見た自はおいしそうだが、策はそれほどでもない」 | ・［～目］ （digunakan untuik angka ordinal/urutan）例：「2番目」「3人曽」 | 【75） 正解 4 | 独立「どくりつ」 | ＜独立（する） * menjadi mandiri/ merdeka/independen | 被は芸挙、選致して階を崩いた。 | Tahun lalu dia menjadi mandiri dan membuka tokonya sendiri.",
+  "75": "独立（どくりつ）= mandiri / independen.",
+  "76": "育児（いくじ）= pengasuhan anak.",
+  "77": "【77】 | 正解 4 | 解答「かいとう」jawaban/ balasan | 李から解替用維を能ります。替えはこの雨織に書いてください。 | Sekarang saya akan membagikan lembar jawaban. | Tolong tuliskan jawabannya di lembar ini. | 漢字 | 解 | ①カイ | ・［解決（かいけつ）］solusi/ penyelesaian | ・ ［解散（かいさん） ］pembubaran / perpisahan | ・［解釈 | （かいしゃく） ］interpretasi/ penaf siran | ・［解説 | （かいせつ）］penjelasan/ eksposisi | ・［見解（けんかい）］opini/ pandangan | ・［正解（せいかい）］jawaban benar | 56 | ・［分解（ぶんかい） ］pembongkaran / disassembly | ・［理解（りかい）］pemahaman | ②と（ける／く） | ・［解ける］ terpecahkan / terurai | 例：「疑簡が解けた」 | ・ ［解く］ memecahkan/ menyelesaikan | 例：「この簡難を解くのに1時間もかかった」 | 答①トウ | ・［答案（とうあん） ］jawaban （kertas ujian） | ・ ［応答（おうとう）］respons / jawaban",
+  "78": "【78】 | 正解 2 く | 細かい「こまかい」 | detail/ sepele/kecil | 彼は補かいことは気にしない先だ。 | Dia adalah tipe orang yang tidak memusingkan hal-hal kecil/sepele. | 漢字 | 細①サイ | ・［細菌（さいきん）］kuman / bakteri | ・［細工（さいく）］kerajinan tangan / pengerjaan halus | ・［細胞（さいぼう） ］sel | ②ほそ（い） | ・ ［細い］ tipis /kurus /ramping | ③こま（かい） | ・［細かい］ | 例：「翻かい亭」「覇かく記崩する」 | 57 | 【79） 正解 3 | 空港「くらこう」 | bandara/ airport | 塗藩へ行くなら、バスが便利ですよ。 | Kalau mau ke bandara, naik bus lebih praktis Iho. | 漢字 | 空 | ①クウ | ・［空気（くらき） ］udara | ・［空想（くらそう）］imajinasi/ khayalan | ・［空中（くらちゅう） ］di udara/angkasa",
+  "79": "空港（くうこう）= bandara.",
+  "80": "香り（かおり）= aroma / wangi."
 };
 
     const state = {
       index: 0,
       answers: {},
       showReview: false,
-      mode: "all"
+      mode: "all",
+      autoNext: false,
+      revealResult: false,
+      timerSeconds: 1800,
+      timerRunning: false,
+      timerHandle: null,
+      examMode: false
     };
 
     const el = {
@@ -558,7 +589,6 @@
       questionNo: document.querySelector("#questionNo"),
       sentence: document.querySelector("#sentence"),
       choices: document.querySelector("#choices"),
-      feedback: document.querySelector("#feedback"),
       prevBtn: document.querySelector("#prevBtn"),
       nextBtn: document.querySelector("#nextBtn"),
       resetBtn: document.querySelector("#resetBtn"),
@@ -568,7 +598,14 @@
       reviewList: document.querySelector("#reviewList"),
       navGrid: document.querySelector("#navGrid"),
       allMode: document.querySelector("#allMode"),
-      wrongMode: document.querySelector("#wrongMode")
+      wrongMode: document.querySelector("#wrongMode"),
+      minutesInput: document.querySelector("#minutesInput"),
+      startTimerBtn: document.querySelector("#startTimerBtn"),
+      pauseTimerBtn: document.querySelector("#pauseTimerBtn"),
+      stopTimerBtn: document.querySelector("#stopTimerBtn"),
+      finishNowBtn: document.querySelector("#finishNowBtn"),
+      autoNextBtn: document.querySelector("#autoNextBtn"),
+      timerDisplay: document.querySelector("#timerDisplay")
     };
 
     function pool() {
@@ -613,20 +650,56 @@
         percentage: answeredCount ? Math.round((correctCount / answeredCount) * 100) : 0
       };
     }
+    function formatTimer(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+    }
+    function stopTimer() {
+      if (state.timerHandle) clearInterval(state.timerHandle);
+      state.timerHandle = null;
+      state.timerRunning = false;
+    }
+    function startTimer() {
+      stopTimer();
+      const mins = Math.max(1, Number(el.minutesInput.value || 30));
+      state.timerSeconds = mins * 60;
+      state.revealResult = false;
+      state.examMode = true;
+      state.timerRunning = true;
+      state.timerHandle = setInterval(() => {
+        state.timerSeconds = Math.max(0, state.timerSeconds - 1);
+        if (state.timerSeconds === 0) {
+          stopTimer();
+          state.revealResult = true;
+        }
+        render();
+      }, 1000);
+      render();
+    }
+    function finishNow() {
+      if (!state.examMode) return;
+      stopTimer();
+      state.revealResult = true;
+      render();
+    }
 
     function render() {
       const items = pool();
       const q = currentQuestion();
       const selected = state.answers[q.id];
       const summary = stats();
+      const showLive = !(state.examMode && !state.revealResult);
 
       el.answered.textContent = summary.answeredCount + "/80";
-      el.correct.textContent = summary.correctCount;
-      el.wrong.textContent = summary.wrongCount;
-      el.score.textContent = summary.percentage + "%";
+      el.correct.textContent = showLive ? String(summary.correctCount) : "0";
+      el.wrong.textContent = showLive ? String(summary.wrongCount) : "0";
+      el.score.textContent = showLive ? (summary.percentage + "%") : "-";
       el.progress.style.width = ((summary.answeredCount / questions.length) * 100) + "%";
 
       el.questionNo.textContent = "Soal " + q.id + " / 80";
+      el.timerDisplay.textContent = formatTimer(state.timerSeconds);
+      el.autoNextBtn.textContent = "Auto Next: " + (state.autoNext ? "ON" : "OFF");
       el.sentence.innerHTML = markedSentence(q.sentence, q.target);
       el.allMode.classList.toggle("active", state.mode === "all");
       el.wrongMode.classList.toggle("active", state.mode === "wrong");
@@ -636,27 +709,21 @@
         const button = document.createElement("button");
         button.type = "button";
         button.className = "choice";
-        if (selected !== undefined && q.answer === i) button.classList.add("correct");
-        if (selected !== undefined && selected === i && q.answer !== i) button.classList.add("wrong");
+        if (state.revealResult && selected !== undefined && q.answer === i) button.classList.add("correct");
+        if (state.revealResult && selected !== undefined && selected === i && q.answer !== i) button.classList.add("wrong");
         button.innerHTML = '<span class="badge">' + (i + 1) + '</span><span class="choice-text">' + escapeHtml(choice) + '</span>';
         button.addEventListener("click", () => {
           state.answers[q.id] = i;
+          state.showReview = true;
+          if (state.autoNext && state.index < pool().length - 1) state.index += 1;
           render();
         });
         el.choices.append(button);
       });
 
-      if (selected === undefined) {
-        el.feedback.className = "feedback";
-        el.feedback.innerHTML = "";
-      } else {
-        const ok = selected === q.answer;
-        el.feedback.className = "feedback show " + (ok ? "correct" : "wrong");
-        el.feedback.innerHTML = '<p><strong>' + (ok ? "Benar!" : "Salah.") + '</strong></p><p>Jawaban: <strong>' + (q.answer + 1) + ". " + escapeHtml(q.choices[q.answer]) + "</strong></p>";
-      }
-
       el.prevBtn.disabled = state.index === 0;
       el.nextBtn.disabled = state.index === items.length - 1;
+      el.reviewBtn.disabled = selected === undefined;
       el.reviewBtn.textContent = state.showReview ? "Tutup review" : "Review jawaban";
       el.reviewPanel.classList.toggle("show", state.showReview);
 
@@ -672,7 +739,8 @@
         button.type = "button";
         button.className = "nav-btn";
         if (q.id === currentId) button.classList.add("current");
-        if (a !== undefined) button.classList.add(a === q.answer ? "correct" : "wrong");
+        if (a !== undefined && !state.revealResult) button.classList.add("answered");
+        if (state.revealResult && a !== undefined) button.classList.add(a === q.answer ? "correct" : "wrong");
         button.textContent = q.id;
         button.addEventListener("click", () => {
           state.mode = "all";
@@ -687,15 +755,32 @@
       el.reviewList.innerHTML = "";
       const q = currentQuestion();
       const a = state.answers[q.id];
+      if (a === undefined) {
+        el.reviewList.innerHTML = '<div class="review-item">Jawab dulu soal ini untuk melihat isi review.</div>';
+        return;
+      }
       const ok = a === q.answer;
       const item = document.createElement("div");
       item.className = "review-item";
       const userAnswer = a !== undefined
         ? '<span class="' + (ok ? "ok" : "no") + '">・Pilihanmu: ' + (a + 1) + ". " + escapeHtml(q.choices[a]) + "</span>"
         : '<span>・Pilihanmu: Belum dijawab</span>';
-      const note = reviewNotes[q.id] ? '<div class="review-note">Ringkas: ' + escapeHtml(reviewNotes[q.id]) + "</div>" : "";
+      const raw = String(reviewNotes[q.id] || "");
+      const keyMatch = raw.match(/「([^」]+)」/);
+      const keyText = keyMatch ? keyMatch[1] : q.choices[q.answer];
+      const cleanSentence = q.sentence.replace(/[。．]$/, "");
+      const noteLines = [
+        q.target + "「" + keyText + "」",
+        "Bacaan yang benar untuk kalimat ini: " + (q.answer + 1) + ". " + q.choices[q.answer]
+      ];
+      const note = '<div class="review-note">' + noteLines.map((line) => escapeHtml(line)).join("<br>") + "</div>";
       el.reviewTitle.textContent = "Review soal " + q.id;
-      item.innerHTML = "<strong>" + q.id + ". " + markedSentence(q.sentence, q.target) + "</strong><div>Jawaban benar: " + (q.answer + 1) + ". " + escapeHtml(q.choices[q.answer]) + " " + userAnswer + "</div>" + note;
+      item.innerHTML =
+        "<strong>【" + q.id + "】 正解 " + (q.answer + 1) + " ✓</strong>" +
+        note +
+        "<div style=\"margin-top:6px;\">" + markedSentence(cleanSentence + "。", q.target) + "</div>" +
+        "<div style=\"margin-top:4px;\">Jawaban benar: " + (q.answer + 1) + ". " + escapeHtml(q.choices[q.answer]) + "</div>" +
+        "<div style=\"margin-top:4px;\">" + userAnswer + "</div>";
       el.reviewList.append(item);
     }
 
@@ -715,10 +800,14 @@
       state.answers = {};
       state.showReview = false;
       state.mode = "all";
+      state.revealResult = false;
+      stopTimer();
       render();
     });
 
     el.reviewBtn.addEventListener("click", () => {
+      const q = currentQuestion();
+      if (state.answers[q.id] === undefined) return;
       state.showReview = !state.showReview;
       render();
     });
@@ -733,6 +822,47 @@
       state.mode = "wrong";
       state.index = 0;
       render();
+    });
+    el.autoNextBtn.addEventListener("click", () => {
+      state.autoNext = !state.autoNext;
+      render();
+    });
+    el.startTimerBtn.addEventListener("click", startTimer);
+    el.pauseTimerBtn.addEventListener("click", () => {
+      if (!state.examMode) return;
+      if (state.timerRunning) {
+        stopTimer();
+      } else if (state.timerSeconds > 0 && !state.revealResult) {
+        state.timerRunning = true;
+        state.timerHandle = setInterval(() => {
+          state.timerSeconds = Math.max(0, state.timerSeconds - 1);
+          if (state.timerSeconds === 0) {
+            stopTimer();
+            state.revealResult = true;
+          }
+          render();
+        }, 1000);
+      }
+      render();
+    });
+    el.stopTimerBtn.addEventListener("click", () => {
+      stopTimer();
+      state.examMode = false;
+      state.revealResult = false;
+      state.timerSeconds = Math.max(1, Number(el.minutesInput.value || 30)) * 60;
+      render();
+    });
+    el.finishNowBtn.addEventListener("click", finishNow);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft" && !el.prevBtn.disabled) {
+        event.preventDefault();
+        el.prevBtn.click();
+      }
+      if (event.key === "ArrowRight" && !el.nextBtn.disabled) {
+        event.preventDefault();
+        el.nextBtn.click();
+      }
     });
 
     render();

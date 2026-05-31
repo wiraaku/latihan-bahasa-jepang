@@ -1,0 +1,1322 @@
+[
+  {
+    "id": 1,
+    "prompt": "大学時代はテニスの（ ）に入っていた。",
+    "options": [
+      "ステージ",
+      "コート",
+      "サービス",
+      "サークル"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: サークル"
+  },
+  {
+    "id": 2,
+    "prompt": "何かあったのかな。どうも彼女の様子が（ ）だよ。",
+    "options": [
+      "気の毒",
+      "変",
+      "地味",
+      "重大"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: 変"
+  },
+  {
+    "id": 3,
+    "prompt": "進学するか、就職するか、どうしようか（ ）。",
+    "options": [
+      "くやんでいる",
+      "まよっている",
+      "はぶいている",
+      "にらんでいる"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: まよっている"
+  },
+  {
+    "id": 4,
+    "prompt": "東京の中心部は家賃が高いから、少し離れた（ ）に家を買った。",
+    "options": [
+      "郊外",
+      "住宅",
+      "都会",
+      "町中"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 郊外"
+  },
+  {
+    "id": 5,
+    "prompt": "（ ）時間ですから、行きましょうか。",
+    "options": [
+      "ぐずぐず",
+      "まあまあ",
+      "まだまだ",
+      "そろそろ"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: そろそろ"
+  },
+  {
+    "id": 6,
+    "prompt": "大雨で川の水が（ ）、家が流された。",
+    "options": [
+      "別れて",
+      "こぼれて",
+      "あふれて",
+      "逃げて"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: あふれて"
+  },
+  {
+    "id": 7,
+    "prompt": "彼は、有名なレストランで料理長を務める（ ）の料理人だ。",
+    "options": [
+      "一般",
+      "一等",
+      "一位",
+      "一流"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: 一流"
+  },
+  {
+    "id": 8,
+    "prompt": "（ ）がわいたら、お茶を入れましょう。",
+    "options": [
+      "飲み物",
+      "お湯",
+      "お菓子",
+      "水"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: お湯"
+  },
+  {
+    "id": 9,
+    "prompt": "お年寄りを（ ）金を取る犯罪が増えています。気をつけてください。",
+    "options": [
+      "ごまかして",
+      "うらんで",
+      "じゃまして",
+      "だまして"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: だまして"
+  },
+  {
+    "id": 10,
+    "prompt": "明るい（ ）の彼女はクラスの人気者だ。",
+    "options": [
+      "心理",
+      "精神",
+      "性格",
+      "人類"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: 性格"
+  },
+  {
+    "id": 11,
+    "prompt": "健康のために（ ）毎日運動をするようにしています。",
+    "options": [
+      "なるべく",
+      "それほど",
+      "かならずしも",
+      "なるほど"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: なるべく"
+  },
+  {
+    "id": 12,
+    "prompt": "人気歌手が出るコンサートのホールは（ ）だった。",
+    "options": [
+      "満員",
+      "満足",
+      "満室",
+      "満開"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 満員"
+  },
+  {
+    "id": 13,
+    "prompt": "とつぜん電気が消えて、部屋の中が（ ）になった。",
+    "options": [
+      "まっくろ",
+      "まっくら",
+      "まっすぐ",
+      "まっさお"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: まっくら"
+  },
+  {
+    "id": 14,
+    "prompt": "人の（ ）を言うのは、やめたほうがいいよ。",
+    "options": [
+      "意地悪",
+      "苦情",
+      "悪口",
+      "文句"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: 悪口"
+  },
+  {
+    "id": 15,
+    "prompt": "昨日は寒かったが、今日は昨日より（ ）暖かい。",
+    "options": [
+      "すっかり",
+      "つねに",
+      "だいぶ",
+      "とにかく"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: だいぶ"
+  },
+  {
+    "id": 16,
+    "prompt": "これはごみ箱ではありません。ここにごみを（ ）ください。",
+    "options": [
+      "投げないで",
+      "拾わないで",
+      "使わないで",
+      "捨てないで"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: 捨てないで"
+  },
+  {
+    "id": 17,
+    "prompt": "デザイナーを目指している彼は、やはり服装の（ ）がいい。",
+    "options": [
+      "ファッション",
+      "センス",
+      "スーツ",
+      "カラー"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: センス"
+  },
+  {
+    "id": 18,
+    "prompt": "新しい生活には、もう（ ）か。",
+    "options": [
+      "なれました",
+      "はなれました",
+      "なりました",
+      "ならいました"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: なれました"
+  },
+  {
+    "id": 19,
+    "prompt": "（ ）がきびしい家庭で育った彼女は、いつも礼儀正しい。",
+    "options": [
+      "規則",
+      "しつけ",
+      "約束",
+      "学習"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: しつけ"
+  },
+  {
+    "id": 20,
+    "prompt": "お忙しいところ（ ）来ていただいて、申しわけありません。",
+    "options": [
+      "たびたび",
+      "たえず",
+      "すでに",
+      "または"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: たびたび"
+  },
+  {
+    "id": 21,
+    "prompt": "（ ）が不足して、弟は大学を卒業することができなかった。",
+    "options": [
+      "講義",
+      "課題",
+      "論文",
+      "単位"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: 単位"
+  },
+  {
+    "id": 22,
+    "prompt": "本屋を何軒も回って、やっと（ ）本を見つけた。",
+    "options": [
+      "迷っていた",
+      "選んでいた",
+      "探していた",
+      "消していた"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: 探していた"
+  },
+  {
+    "id": 23,
+    "prompt": "3月になった。（ ）だんだん暖かくなる。",
+    "options": [
+      "あとで",
+      "これから",
+      "ただちに",
+      "さっき"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: これから"
+  },
+  {
+    "id": 24,
+    "prompt": "暑い日が続いたせいで、庭の植物が（ ）しまった。",
+    "options": [
+      "死んで",
+      "あきて",
+      "かれて",
+      "つれて"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: かれて"
+  },
+  {
+    "id": 25,
+    "prompt": "急にアルバイトを休んで、仕事の仲間に（ ）をかけてしまった。",
+    "options": [
+      "苦しみ",
+      "失礼",
+      "めいわく",
+      "痛み"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: めいわく"
+  },
+  {
+    "id": 26,
+    "prompt": "サルは、知能が高くて（ ） な動物です。",
+    "options": [
+      "ふくざつ",
+      "ていねい",
+      "りこう",
+      "ねっしん"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: りこう"
+  },
+  {
+    "id": 27,
+    "prompt": "（ ）がよくなれば、給料も上がるだろう。",
+    "options": [
+      "景気",
+      "物価",
+      "活気",
+      "費用"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 景気"
+  },
+  {
+    "id": 28,
+    "prompt": "母は結婚以来30年間、父をしっかり（ ）きた。",
+    "options": [
+      "運んで",
+      "広げて",
+      "持って",
+      "支えて"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: 支えて"
+  },
+  {
+    "id": 29,
+    "prompt": "A「あの選手はこの5年間、一度も負けたことがないんだって。」B「へえ、それは（ ）ね。」",
+    "options": [
+      "すごい",
+      "ひどい",
+      "うすい",
+      "うまい"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: すごい"
+  },
+  {
+    "id": 30,
+    "prompt": "太陽の（ ）を利用して電気を作るシステムが注目されている。",
+    "options": [
+      "ステージ",
+      "プログラム",
+      "プラス",
+      "エネルギー"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: エネルギー"
+  },
+  {
+    "id": 31,
+    "prompt": "将来は（ ）になって、病院で働きたいと思います。",
+    "options": [
+      "教師",
+      "看護師",
+      "消防士",
+      "警察官"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: 看護師"
+  },
+  {
+    "id": 32,
+    "prompt": "一度（ ）私の家に達びに来てください。",
+    "options": [
+      "さっさと",
+      "ぜひ",
+      "けっこう",
+      "たまに"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: ぜひ"
+  },
+  {
+    "id": 33,
+    "prompt": "最近、日本人のサッカー選手が海外で（ ）している。",
+    "options": [
+      "営業",
+      "労働",
+      "転勤",
+      "活躍"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: 活躍"
+  },
+  {
+    "id": 34,
+    "prompt": "晩ごはんの（ ）は何にしようか。",
+    "options": [
+      "計画",
+      "献立",
+      "種類",
+      "予定"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: 献立"
+  },
+  {
+    "id": 35,
+    "prompt": "お金は（ ）払いました。領収書はここにありますよ。",
+    "options": [
+      "さっぱり",
+      "しだいに",
+      "がっかり",
+      "とっくに"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: とっくに"
+  },
+  {
+    "id": 36,
+    "prompt": "ここから東京駅まで片道150円だから、（ ）で300円だ。",
+    "options": [
+      "日帰り",
+      "通り道",
+      "往復",
+      "寄り道"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: 往復"
+  },
+  {
+    "id": 37,
+    "prompt": "課長が課のみんなの意見を（ ぶちょう ほうこく ）、部長に報告した。",
+    "options": [
+      "ねらって",
+      "たたんで",
+      "ちぢめて",
+      "まとめて"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: まとめて"
+  },
+  {
+    "id": 38,
+    "prompt": "私は（ ）をして学費と生活費をかせいでいる。",
+    "options": [
+      "アルバイト",
+      "クラス",
+      "サークル",
+      "スポーツ"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: アルバイト"
+  },
+  {
+    "id": 39,
+    "prompt": "夜遅い時間に帰ってくる娘を駅まで（ ）行った。",
+    "options": [
+      "運びに",
+      "むかえに",
+      "送りに",
+      "とどけに"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: むかえに"
+  },
+  {
+    "id": 40,
+    "prompt": "この辺で（ ）人を見たら、すぐ警察に知らせてください。",
+    "options": [
+      "はげしい",
+      "けわしい",
+      "ひとしい",
+      "あやしい"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: あやしい"
+  },
+  {
+    "id": 41,
+    "prompt": "A「ご（ ）は、どちらですか。」B「大阪です。」",
+    "options": [
+      "出場",
+      "出身",
+      "出勤",
+      "出席"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: 出身"
+  },
+  {
+    "id": 42,
+    "prompt": "試験が終わったら、（ 思わず ）遊ぼう。",
+    "options": [
+      "思わず",
+      "ちょうど",
+      "思いっきり",
+      "少なくとも"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: 思いっきり"
+  },
+  {
+    "id": 43,
+    "prompt": "私の（ ）はゲームとダンスです。",
+    "options": [
+      "夢中",
+      "関心",
+      "熱中",
+      "趣味"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: 趣味"
+  },
+  {
+    "id": 44,
+    "prompt": "X市は外国人が多く住む（ ）な都市だ。",
+    "options": [
+      "国際的",
+      "国民的",
+      "個人的",
+      "社会的"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 国際的"
+  },
+  {
+    "id": 45,
+    "prompt": "夫は家族に相談しないで（ 籐手 しんちょう 直重 ）に会社をやめてしまった。",
+    "options": [
+      "籐手",
+      "しんちょう",
+      "㟢笯",
+      "賞剣"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 籐手"
+  },
+  {
+    "id": 46,
+    "prompt": "健康のために、栄養の（ ）に気をつけています。",
+    "options": [
+      "プラン",
+      "エネルギー",
+      "バランス",
+      "メニュー"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: バランス"
+  },
+  {
+    "id": 47,
+    "prompt": "台風による大雨で、予定されていた花火大会は（ ）になった。",
+    "options": [
+      "停止",
+      "中止",
+      "休息",
+      "休憩"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: 中止"
+  },
+  {
+    "id": 48,
+    "prompt": "会議が始まりますから、みなさん、（ ） 会議室にお集まりください。",
+    "options": [
+      "きちんと",
+      "しきゅう",
+      "さきほど",
+      "とつぜん"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: しきゅう"
+  },
+  {
+    "id": 49,
+    "prompt": "この店には、子ども用品がなんでも（ ）。",
+    "options": [
+      "まとまっている",
+      "たまっている",
+      "集中している",
+      "そろっている"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: まとまっている"
+  },
+  {
+    "id": 50,
+    "prompt": "小さいことでも、「ありがとう」と（ ）を言われると、気持ちがいい。",
+    "options": [
+      "お辞儀",
+      "お世話",
+      "お祝い",
+      "お礼"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: お礼"
+  },
+  {
+    "id": 51,
+    "prompt": "今日は天気がいいし、風もあるので、洗ったものがよく（ ）だろう。",
+    "options": [
+      "かくす",
+      "かわく",
+      "ぬれる",
+      "むすぶ"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: かわく"
+  },
+  {
+    "id": 52,
+    "prompt": "お風呂のお湯は、熱いのが好きですか、それとも（ ）ほうがいいですか。",
+    "options": [
+      "くどい",
+      "つらい",
+      "ぬるい",
+      "のろい"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: ぬるい"
+  },
+  {
+    "id": 53,
+    "prompt": "起きる時間や寝る時間など、（ にちじょう 日常 へいじつ しゅうかん ）の習慣をちょっと変えてみませんか。",
+    "options": [
+      "日常",
+      "平日",
+      "翌日",
+      "日程"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 日常"
+  },
+  {
+    "id": 54,
+    "prompt": "英語の聴解試験はとても難しくて、（ ）わからなかった。",
+    "options": [
+      "めったに",
+      "おもに",
+      "ぴったり",
+      "ほとんど"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: ほとんど"
+  },
+  {
+    "id": 55,
+    "prompt": "あの二人は（ ）がいい。いつもいっしょに行動している。",
+    "options": [
+      "仲",
+      "友",
+      "愛",
+      "心"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 仲"
+  },
+  {
+    "id": 56,
+    "prompt": "試験の前に英語の単語をいっしょうけんめいに（ ）。",
+    "options": [
+      "暗記した",
+      "記録した",
+      "清書した",
+      "記入した"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 暗記した"
+  },
+  {
+    "id": 57,
+    "prompt": "親は子どもの（ ）を楽しみにしたり、心配したりする。",
+    "options": [
+      "過去",
+      "将来",
+      "現実",
+      "来日"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: 将来"
+  },
+  {
+    "id": 58,
+    "prompt": "その知らせはほんとうですか。（ ）な情報ですか。",
+    "options": [
+      "けち",
+      "むり",
+      "たしか",
+      "わずか"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: たしか"
+  },
+  {
+    "id": 59,
+    "prompt": "赤ちゃんが（ ）笑った顔は、とてもかわいい。",
+    "options": [
+      "しっかり",
+      "はっきり",
+      "ぴったり",
+      "にっこり"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: にっこり"
+  },
+  {
+    "id": 60,
+    "prompt": "その自転車はじゃまですから、（ ）ください。",
+    "options": [
+      "やめて",
+      "とけて",
+      "どけて",
+      "はめて"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: どけて"
+  },
+  {
+    "id": 61,
+    "prompt": "それは（ ）の出来事だったから、何が起きたかわからなかった。",
+    "options": [
+      "一回",
+      "一日",
+      "一度",
+      "一瞬"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: 一瞬"
+  },
+  {
+    "id": 62,
+    "prompt": "あつ 暑いですね。（ ガソリン ）を入れましょうか。",
+    "options": [
+      "ガソリン",
+      "チェック",
+      "スピード",
+      "エアコン"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: エアコン"
+  },
+  {
+    "id": 63,
+    "prompt": "何が入っているかと箱を開けてみたら、（ ）だった。",
+    "options": [
+      "無",
+      "空気",
+      "空",
+      "無し"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: 空"
+  },
+  {
+    "id": 64,
+    "prompt": "私は学生のころ、（ ）外国に住んでいました。",
+    "options": [
+      "しばらく",
+      "今後",
+      "しだいに",
+      "およそ"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: しばらく"
+  },
+  {
+    "id": 65,
+    "prompt": "この国は島国なので、四方を海に（ ）いる。",
+    "options": [
+      "近づいて",
+      "囲まれて",
+      "回って",
+      "包まれて"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: 囲まれて"
+  },
+  {
+    "id": 66,
+    "prompt": "山や川のきれいな（ ） で暮らしたいと思っています。",
+    "options": [
+      "住所",
+      "会場",
+      "田舎",
+      "社会"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: 田舎"
+  },
+  {
+    "id": 67,
+    "prompt": "その仕事をするのに（ ）な人はだれだろう。",
+    "options": [
+      "正直",
+      "適当",
+      "正確",
+      "的確"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: 適当"
+  },
+  {
+    "id": 68,
+    "prompt": "このシャツの（ ）は好きだが、色はあまりよくない。",
+    "options": [
+      "絵画",
+      "図",
+      "柄",
+      "サイズ"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: 柄"
+  },
+  {
+    "id": 69,
+    "prompt": "あなたが来るのを、朝から（ ）待っていましたよ。",
+    "options": [
+      "ずっと",
+      "やっと",
+      "さっと",
+      "もっと"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: ずっと"
+  },
+  {
+    "id": 70,
+    "prompt": "甘いものは（ ）が高いから、食べすぎないように気をつけよう。",
+    "options": [
+      "マナー",
+      "レジャー",
+      "メンバー",
+      "カロリー"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: カロリー"
+  },
+  {
+    "id": 71,
+    "prompt": "会議の準備が（ ）ので、みなさん、会議室に集まってください。",
+    "options": [
+      "とどまった",
+      "ととのった",
+      "かがやいた",
+      "よみがえった"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: ととのった"
+  },
+  {
+    "id": 72,
+    "prompt": "あの人はやせているけど、（ ）力が強い。",
+    "options": [
+      "それに",
+      "案外",
+      "ただし",
+      "結局"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: 案外"
+  },
+  {
+    "id": 73,
+    "prompt": "うちの息子は中学に入ってから、サッカーに（ ）しています。",
+    "options": [
+      "熱中",
+      "関心",
+      "熱心",
+      "夢中"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 熱中"
+  },
+  {
+    "id": 74,
+    "prompt": "急に用事ができたので、今日の美容院の予約を（ ）。",
+    "options": [
+      "取り替えた",
+      "張り切った",
+      "取り消した",
+      "落ち着いた"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: 取り消した"
+  },
+  {
+    "id": 75,
+    "prompt": "他人のアイディアを自分のものだと言って発表するなんて、彼は（ ）人だ。",
+    "options": [
+      "うるさい",
+      "きびしい",
+      "しつこい",
+      "ずるい"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: うるさい"
+  },
+  {
+    "id": 76,
+    "prompt": "この店の（ きゅうじつ 休日 ）は水曜日です。",
+    "options": [
+      "休日",
+      "祝日",
+      "定休日",
+      "きゅうか"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: 定休日"
+  },
+  {
+    "id": 77,
+    "prompt": "毎晩寝る前にお酒を一杯飲むのが祖父の（ ）だ。",
+    "options": [
+      "普通",
+      "実行",
+      "一般",
+      "習慣"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: 習慣"
+  },
+  {
+    "id": 78,
+    "prompt": "坂を走って上ったら、（ ）が苦しくなった。",
+    "options": [
+      "声",
+      "息",
+      "ことば",
+      "話"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: 息"
+  },
+  {
+    "id": 79,
+    "prompt": "私は、休みの日は（ ）朝寝坊をする。",
+    "options": [
+      "こっそり",
+      "ぐっすり",
+      "たいてい",
+      "ちゃんと"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: たいてい"
+  },
+  {
+    "id": 80,
+    "prompt": "次の会議の日時が決まったら、メールで（ ）をします。",
+    "options": [
+      "連絡",
+      "予報",
+      "命令",
+      "投書"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 連絡"
+  },
+  {
+    "id": 81,
+    "prompt": "結婚して子どもが（ ）。出産は10月の予定だ。",
+    "options": [
+      "できた",
+      "生まれた",
+      "来た",
+      "現れた"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: できた"
+  },
+  {
+    "id": 82,
+    "prompt": "練習を始めたころより（ ）上手になりましたね。",
+    "options": [
+      "もともと",
+      "すいぶん",
+      "きっと",
+      "かならず"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: すいぶん"
+  },
+  {
+    "id": 83,
+    "prompt": "あの人の批評はいつも（ ）酎維だ。",
+    "options": [
+      "するどくて",
+      "さわがしくて",
+      "だらしなくて",
+      "かゆくて"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: するどくて"
+  },
+  {
+    "id": 84,
+    "prompt": "両親が忙しいので、子どもたちが（ ）を手伝っている。",
+    "options": [
+      "行事",
+      "食事",
+      "事故",
+      "家事"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: 家事"
+  },
+  {
+    "id": 85,
+    "prompt": "高校の野球部で活躍した兄は、葬薬してから（ ベテラン スター せんしゅ ）の選手になった。",
+    "options": [
+      "ベテラン",
+      "プロ",
+      "スター",
+      "トップ"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: プロ"
+  },
+  {
+    "id": 86,
+    "prompt": "クリスマスも終わって、今年も残りは（ よぶん ）です。",
+    "options": [
+      "あらた",
+      "余分",
+      "にわか",
+      "わずか"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: わずか"
+  },
+  {
+    "id": 87,
+    "prompt": "会場には（ ）がありません。バスか電車でお越しください。",
+    "options": [
+      "道路",
+      "車庫",
+      "停留所",
+      "駐車場"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: 駐車場"
+  },
+  {
+    "id": 88,
+    "prompt": "人から頼まれたことは、（ ）やろうと思っている。",
+    "options": [
+      "許さないで",
+      "やめないで",
+      "断らないで",
+      "引き止めないで"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: 断らないで"
+  },
+  {
+    "id": 89,
+    "prompt": "「すぐに来て」と（ ）母に呼ばれたので、どうしたのかと心配にな った。",
+    "options": [
+      "突然",
+      "至急",
+      "ときどき",
+      "さっそく"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 突然"
+  },
+  {
+    "id": 90,
+    "prompt": "青の信号は「通ってもいい」という（ ）です。",
+    "options": [
+      "合図",
+      "予報",
+      "案内",
+      "報告"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 合図"
+  },
+  {
+    "id": 91,
+    "prompt": "北の地方では雪が2メートルも（ ）。",
+    "options": [
+      "つどっている",
+      "かさなっている",
+      "たまっている",
+      "つもっている"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: つもっている"
+  },
+  {
+    "id": 92,
+    "prompt": "初めて買う車は新車でなくてもいい。（ ）の車で十分だ。",
+    "options": [
+      "古風",
+      "稽古",
+      "古典",
+      "中古"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: 中古"
+  },
+  {
+    "id": 93,
+    "prompt": "最近、主婦の間でボランティア活動が（ ）です。",
+    "options": [
+      "しゅよう",
+      "さかん",
+      "にぎやか",
+      "熱心"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: さかん"
+  },
+  {
+    "id": 94,
+    "prompt": "郵便で現金を送る場合は、（ ）で送ってください。",
+    "options": [
+      "特急",
+      "配達",
+      "書留",
+      "小包"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: 書留"
+  },
+  {
+    "id": 95,
+    "prompt": "よく勉強しているのに、（ ちっとも せいせき ）成績が上がらない。どうしてだろう。",
+    "options": [
+      "ちっとも",
+      "ざっと",
+      "さらに",
+      "おそらく"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: ちっとも"
+  },
+  {
+    "id": 96,
+    "prompt": "庭の草は、取ってもまたすぐに（ ）。",
+    "options": [
+      "みのる",
+      "さく",
+      "はえる",
+      "うえる"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: はえる"
+  },
+  {
+    "id": 97,
+    "prompt": "電子辞書の（ ）が切れてしまった。",
+    "options": [
+      "電池",
+      "発電",
+      "電力",
+      "運転"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 電池"
+  },
+  {
+    "id": 98,
+    "prompt": "母は毎朝8時からのテレビ（ ）を見るのを楽しみにしている。",
+    "options": [
+      "マスコミ",
+      "ゲーム",
+      "リズム",
+      "ドラマ"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: ドラマ"
+  },
+  {
+    "id": 99,
+    "prompt": "弟は国立大学の合格を（ ）勉強している。",
+    "options": [
+      "ささえて",
+      "かせいで",
+      "めだって",
+      "めざして"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: めざして"
+  },
+  {
+    "id": 100,
+    "prompt": "姉の声は母の声によく（ まちが ）ので、電話だと間違えやすい。",
+    "options": [
+      "にている",
+      "あっている",
+      "よっている",
+      "はっている"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: にている"
+  },
+  {
+    "id": 101,
+    "prompt": "新聞の（ ）を見れば、記事のだいたいの内容がわかる。",
+    "options": [
+      "見出し",
+      "宛名",
+      "題",
+      "日記"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 見出し"
+  },
+  {
+    "id": 102,
+    "prompt": "お金がないから、（ ）な生活はできません。",
+    "options": [
+      "豊富",
+      "見事",
+      "有利",
+      "ぜいたく"
+    ],
+    "answer": 3,
+    "note": "Kata yang paling tepat: ぜいたく"
+  },
+  {
+    "id": 103,
+    "prompt": "この車、（ ）ですね。新車でしょう？",
+    "options": [
+      "ぴかぴか",
+      "ほかほか",
+      "ぎりぎり",
+      "ぽかぽか"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: ぴかぴか"
+  },
+  {
+    "id": 104,
+    "prompt": "友だちに手伝ってもらって、とても（ ）。",
+    "options": [
+      "喜んだ",
+      "助かった",
+      "敬った",
+      "頼った"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: 助かった"
+  },
+  {
+    "id": 105,
+    "prompt": "この書類のここに判子か（ ）をお願いします。",
+    "options": [
+      "タイプ",
+      "ページ",
+      "サイン",
+      "センス"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: サイン"
+  },
+  {
+    "id": 106,
+    "prompt": "（ ）からずっと雨が降り続いている。",
+    "options": [
+      "翌日",
+      "あさって",
+      "おととい",
+      "今日"
+    ],
+    "answer": 2,
+    "note": "Kata yang paling tepat: おととい"
+  },
+  {
+    "id": 107,
+    "prompt": "暖かくなって、庭の花が（ ）咲き始めた。",
+    "options": [
+      "自由に",
+      "いっぱいに",
+      "合わせて",
+      "いっせいに"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 自由に"
+  },
+  {
+    "id": 108,
+    "prompt": "今度の日曜日に（ ）で温泉に行きませんか。",
+    "options": [
+      "往復",
+      "日帰り",
+      "宿泊",
+      "行き帰り"
+    ],
+    "answer": 1,
+    "note": "Kata yang paling tepat: 日帰り"
+  },
+  {
+    "id": 109,
+    "prompt": "野菜や果物はビタミンを多く（ ）。",
+    "options": [
+      "ふくんでいる",
+      "受け持ち",
+      "のべている",
+      "しまっている"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: ふくんでいる"
+  },
+  {
+    "id": 110,
+    "prompt": "私の学校では、週に1回掃除（ ）がまわってくる。",
+    "options": [
+      "担任",
+      "受け持ち",
+      "順番",
+      "当番"
+    ],
+    "answer": 0,
+    "note": "Kata yang paling tepat: 担任"
+  }
+]
